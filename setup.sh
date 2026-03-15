@@ -28,3 +28,16 @@ for file in keybindings.json settings.json; do
 done
 
 echo "Done."
+
+# Seed ~/.cursor/mcp.json (copy-once — GitLens overwrites on updates)
+if [ ! -f "$HOME/.cursor/mcp.json" ]; then
+    mkdir -p "$HOME/.cursor"
+    cp "$DOTFILES/cursor/mcp.json" "$HOME/.cursor/mcp.json"
+    echo "  mcp.json: seeded from template"
+    echo "  ⚠ Edit ~/.cursor/mcp.json — add GITHUB_PERSONAL_ACCESS_TOKEN"
+else
+    echo "  ~/.cursor/mcp.json: already exists, skipping"
+fi
+
+# Claude Code setup
+bash "$DOTFILES/claude-setup.sh"

@@ -1,14 +1,18 @@
 # dotfiles
 
-Personal config files for Cursor and dev tooling docs.
+Personal config files for Cursor, Claude Code, and dev tooling docs.
 
 ## What's here
 
-| Path | Symlinked to |
-|------|-------------|
-| `cursor/keybindings.json` | `~/Library/Application Support/Cursor/User/keybindings.json` |
-| `cursor/settings.json` | `~/Library/Application Support/Cursor/User/settings.json` |
-| `docs/python-dev-tooling-setup.md` | reference only, no symlink |
+| Path | How it's applied |
+|------|-----------------|
+| `cursor/keybindings.json` | Symlinked → `~/Library/Application Support/Cursor/User/keybindings.json` |
+| `cursor/settings.json` | Symlinked → `~/Library/Application Support/Cursor/User/settings.json` |
+| `cursor/mcp.json` | Copied once → `~/.cursor/mcp.json` (not symlinked — GitLens overwrites) |
+| `claude/settings.json` | Copied once → `~/.claude/settings.json` (sanitized template, no secrets) |
+| `claude/plugins.txt` | Read by `claude-setup.sh` to install plugins via CLI |
+| `docs/python-dev-tooling-setup.md` | Reference only |
+| `docs/claude-code-setup.md` | Reference only |
 
 ## New machine setup
 
@@ -17,7 +21,17 @@ git clone <repo-url> ~/dotfiles
 cd ~/dotfiles && bash setup.sh
 ```
 
-`setup.sh` will back up any existing Cursor config files (as `.bak`) before creating symlinks.
+`setup.sh`:
+- Backs up existing Cursor config files (as `.bak`) then symlinks them
+- Seeds `~/.cursor/mcp.json` from template (skipped if already exists)
+- Seeds `~/.claude/settings.json` from template (skipped if already exists)
+- Installs all Claude Code plugins via `claude plugin install`
+
+After running, add your GitHub PAT to both:
+- `~/.claude/settings.json` → `GITHUB_PERSONAL_ACCESS_TOKEN`
+- `~/.cursor/mcp.json` → `GITHUB_PERSONAL_ACCESS_TOKEN`
+
+See `docs/claude-code-setup.md` for full details on the Claude Code and Cursor MCP setup.
 
 ## Verify keybindings
 

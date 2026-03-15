@@ -1,0 +1,8 @@
+typescript-lsp@claude-plugins-official
+playwright@claude-plugins-official
+context7@claude-plugins-official
+github@claude-plugins-official
+commit-commands@claude-plugins-official
+feature-dev@claude-plugins-official
+pyright-lsp@claude-plugins-official
+claude-api@anthropic-agent-skills
