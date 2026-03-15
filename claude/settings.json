@@ -39,13 +39,6 @@
         "GITHUB_PERSONAL_ACCESS_TOKEN": "<add-your-token>"
       }
     },
-    "claude-context": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@anthropic/claude-context"
-      ]
-    },
     "ruff": {
       "command": "uvx",
       "args": [
