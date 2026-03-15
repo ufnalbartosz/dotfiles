@@ -76,7 +76,21 @@ After seeding `~/.claude/settings.json`, replace the placeholder:
 "GITHUB_PERSONAL_ACCESS_TOKEN": "<add-your-token>"
 ```
 
-Generate a token at GitHub → Settings → Developer settings → Personal access tokens. Scopes needed: `repo`, `read:org`.
+**Recommended: use `gh` CLI (no manual PAT needed)**
+
+If `gh` is installed and authenticated (`gh auth login`), get the token with:
+
+```sh
+gh auth token
+```
+
+Paste that value in place of `<add-your-token>`. The `gho_...` OAuth token managed by `gh` has the same capabilities as a PAT and doesn't expire unless revoked.
+
+Note: `gh auth token` does NOT trigger a login flow if unauthenticated — it just fails. If the token ever stops working, run `gh auth login` again and update the config files.
+
+**Alternative: generate a classic PAT**
+
+GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic). Scopes needed: `repo`, `read:org`.
 
 ### LSP plugins vs cclsp MCPs
 

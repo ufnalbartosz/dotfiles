@@ -6,6 +6,20 @@ CURSOR_DIR="$HOME/Library/Application Support/Cursor/User"
 
 echo "Setting up dotfiles from $DOTFILES"
 
+# Install Homebrew dependencies
+if command -v brew &>/dev/null; then
+    echo "Installing Homebrew packages..."
+    brew bundle --file="$DOTFILES/Brewfile"
+else
+    echo "  ⚠ Homebrew not found — install from https://brew.sh then re-run setup.sh"
+fi
+
+# Install Claude Code (requires node)
+if command -v npm &>/dev/null && ! command -v claude &>/dev/null; then
+    echo "Installing Claude Code..."
+    npm install -g @anthropic-ai/claude-code
+fi
+
 # Create Cursor user dir if it doesn't exist (fresh machine)
 mkdir -p "$CURSOR_DIR"
 
