@@ -1,0 +1,8 @@
+{
+    "window.commandCenter": true,
+    "claudeCode.preferredLocation": "panel",
+    "claudeCode.selectedModel": "default",
+    "claudeCode.initialPermissionMode": "acceptEdits",
+    "editor.cursorBlinking": "solid",
+    "editor.cursorStyle": "block"
+}
