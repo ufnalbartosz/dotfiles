@@ -95,7 +95,12 @@
     },
     {
         "key": "ctrl+c p",
-        "command": "extension.jumpTest",
+        "command": "test-navigator.jumpTest",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+c shift+p",
+        "command": "test-navigator.createTest",
         "when": "editorTextFocus"
     }
 ]

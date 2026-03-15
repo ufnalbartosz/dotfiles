@@ -1,0 +1,14 @@
+{
+  "name": "test-navigator",
+  "displayName": "Test Navigator",
+  "version": "0.1.0",
+  "engines": { "vscode": "^1.80.0" },
+  "activationEvents": ["onCommand:test-navigator.jumpTest", "onCommand:test-navigator.createTest"],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      { "command": "test-navigator.jumpTest", "title": "Test Navigator: Jump to/from Test" },
+      { "command": "test-navigator.createTest", "title": "Test Navigator: Create Test File" }
+    ]
+  }
+}

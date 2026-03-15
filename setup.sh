@@ -53,5 +53,14 @@ else
     echo "  ~/.cursor/mcp.json: already exists, skipping"
 fi
 
+# Symlink custom Cursor extensions
+CURSOR_EXT_DIR="$HOME/.cursor/extensions"
+mkdir -p "$CURSOR_EXT_DIR"
+for ext in "$DOTFILES/cursor/extensions"/*/; do
+    ext_name=$(basename "$ext")
+    ln -sf "$ext" "$CURSOR_EXT_DIR/$ext_name"
+    echo "  extension: symlinked $ext_name"
+done
+
 # Claude Code setup
 bash "$DOTFILES/claude-setup.sh"
