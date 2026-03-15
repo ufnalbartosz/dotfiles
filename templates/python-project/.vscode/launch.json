@@ -1,0 +1,39 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            // Hooks into Test Explorer "Debug Test" gutter icon / right-click menu.
+            // "purpose" is what connects this config to the Test Explorer UI.
+            "name": "Debug Tests (Test Explorer)",
+            "type": "debugpy",
+            "request": "launch",
+            "purpose": ["debug-test"],
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                // Disable coverage so breakpoints work when pytest-cov is installed
+                "PYTEST_ADDOPTS": "--no-cov"
+            }
+        },
+        {
+            // Run + debug the full test suite manually via Run > Start Debugging
+            "name": "pytest: Run All Tests",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "pytest",
+            "args": ["tests", "-v", "--tb=short", "--no-cov"],
+            "console": "integratedTerminal",
+            "justMyCode": false
+        },
+        {
+            // Debug only the currently open test file
+            "name": "pytest: Debug Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "pytest",
+            "args": ["${file}", "-v", "--no-cov"],
+            "console": "integratedTerminal",
+            "justMyCode": false
+        }
+    ]
+}
