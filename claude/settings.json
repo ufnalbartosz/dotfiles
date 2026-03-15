@@ -46,6 +46,18 @@
         "@anthropic/claude-context"
       ]
     },
+    "ruff": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-analyzer"
+      ]
+    },
+    "pytest": {
+      "command": "uvx",
+      "args": [
+        "mcp-pytest-runner"
+      ]
+    },
     "snyk": {
       "command": "snyk",
       "args": [
