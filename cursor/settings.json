@@ -4,5 +4,10 @@
     "claudeCode.selectedModel": "default",
     "claudeCode.initialPermissionMode": "acceptEdits",
     "editor.cursorBlinking": "solid",
-    "editor.cursorStyle": "block"
+    "editor.cursorStyle": "block",
+    // "workbench.colorTheme": "Zenburn+ Dark",
+    "workbench.colorTheme": "Default Dark+",
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "testing.openTesting": "neverOpen"
 }

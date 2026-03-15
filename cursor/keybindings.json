@@ -61,5 +61,41 @@
         "key": "cmd+\\",
         "command": "workbench.action.focusActiveEditorGroup",
         "when": "explorerViewletFocus"
+    },
+    {
+        "key": "ctrl+c g",
+        "command": "gitlens.showGraphView"
+    },
+    {
+        "key": "ctrl+c e",
+        "command": "workbench.view.explorer"
+    },
+    {
+        "key": "ctrl+c t",
+        "command": "workbench.action.terminal.toggleTerminal"
+    },
+    {
+        "key": "ctrl+c s",
+        "command": "workbench.action.findInFiles"
+    },
+    {
+        "key": "ctrl+c i",
+        "command": "editor.action.indentLines",
+        "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+        "key": "alt+shift+p",
+        "command": "editor.action.moveLinesUpAction",
+        "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+        "key": "alt+shift+n",
+        "command": "editor.action.moveLinesDownAction",
+        "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+        "key": "ctrl+c p",
+        "command": "extension.jumpTest",
+        "when": "editorTextFocus"
     }
 ]
