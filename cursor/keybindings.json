@@ -24,7 +24,7 @@
     {
         "key": "alt+cmd+s",
         "command": "workbench.action.toggleUnifiedSidebarFromKeyboard",
-        "when": "cursor.agentIdeUnification.enabled == true && !isAuxiliaryWindowFocusedContext"
+        "when": "!isAuxiliaryWindowFocusedContext"
     },
     {
         "key": "ctrl+x ctrl+c",
@@ -63,23 +63,23 @@
         "when": "explorerViewletFocus"
     },
     {
-        "key": "ctrl+c g",
+        "key": "cmd+; g",
         "command": "gitlens.showGraphView"
     },
     {
-        "key": "ctrl+c e",
+        "key": "cmd+; e",
         "command": "workbench.view.explorer"
     },
     {
-        "key": "ctrl+c t",
+        "key": "cmd+; t",
         "command": "workbench.action.terminal.toggleTerminal"
     },
     {
-        "key": "ctrl+c s",
+        "key": "cmd+; s",
         "command": "workbench.action.findInFiles"
     },
     {
-        "key": "ctrl+c i",
+        "key": "cmd+; i",
         "command": "editor.action.indentLines",
         "when": "editorTextFocus && !editorReadonly"
     },
@@ -94,12 +94,12 @@
         "when": "editorTextFocus && !editorReadonly"
     },
     {
-        "key": "ctrl+c p",
+        "key": "cmd+; p",
         "command": "test-navigator.jumpTest",
         "when": "editorTextFocus"
     },
     {
-        "key": "ctrl+c shift+p",
+        "key": "cmd+; shift+p",
         "command": "test-navigator.createTest",
         "when": "editorTextFocus"
     }
