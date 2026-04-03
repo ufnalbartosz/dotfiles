@@ -63,23 +63,23 @@
         "when": "explorerViewletFocus"
     },
     {
-        "key": "cmd+; g",
+        "key": "ctrl+x ctrl+g",
         "command": "gitlens.showGraphView"
     },
     {
-        "key": "cmd+; e",
+        "key": "ctrl+x ctrl+e",
         "command": "workbench.view.explorer"
     },
     {
-        "key": "cmd+; t",
+        "key": "ctrl+x ctrl+t",
         "command": "workbench.action.terminal.toggleTerminal"
     },
     {
-        "key": "cmd+; s",
+        "key": "ctrl+x ctrl+s",
         "command": "workbench.action.findInFiles"
     },
     {
-        "key": "cmd+; i",
+        "key": "ctrl+x ctrl+i",
         "command": "editor.action.indentLines",
         "when": "editorTextFocus && !editorReadonly"
     },
@@ -94,12 +94,12 @@
         "when": "editorTextFocus && !editorReadonly"
     },
     {
-        "key": "cmd+; p",
+        "key": "ctrl+x ctrl+p",
         "command": "test-navigator.jumpTest",
         "when": "editorTextFocus"
     },
     {
-        "key": "cmd+; shift+p",
+        "key": "ctrl+x ctrl+shift+p",
         "command": "test-navigator.createTest",
         "when": "editorTextFocus"
     }
