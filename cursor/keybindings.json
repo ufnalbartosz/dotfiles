@@ -63,6 +63,10 @@
         "when": "explorerViewletFocus"
     },
     {
+        "key": "ctrl+x ctrl+z",
+        "command": "workbench.action.toggleZenMode"
+    },
+    {
         "key": "ctrl+x ctrl+g",
         "command": "gitlens.showGraphView"
     },
