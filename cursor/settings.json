@@ -9,5 +9,16 @@
     "workbench.colorTheme": "Default Dark+",
     "python.testing.pytestEnabled": true,
     "python.testing.unittestEnabled": false,
-    "testing.openTesting": "neverOpen"
+    "testing.openTesting": "neverOpen",
+    "testing.automaticallyOpenTestResults": "neverOpen",
+    "terminal.integrated.commandsToSkipShell": [
+        "workbench.action.toggleMaximizedPanel",
+        "workbench.action.toggleZenMode",
+        "workbench.action.focusActiveEditorGroup",
+        "gitlens.showGraphView",
+        "workbench.view.explorer",
+        "workbench.action.findInFiles"
+    ],
+    "workbench.statusBar.visible": false,
+    "zenMode.centerLayout": false
 }
