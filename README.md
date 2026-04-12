@@ -6,12 +6,12 @@ Personal config files for Cursor, Claude Code, and dev tooling docs.
 
 | Path | How it's applied |
 |------|-----------------|
-| `Brewfile` | Run via `brew bundle` by `setup.sh` |
+| `Brewfile` | Run via `brew bundle` by `scripts/setup.sh` |
 | `cursor/keybindings.json` | Symlinked → `~/Library/Application Support/Cursor/User/keybindings.json` |
 | `cursor/settings.json` | Symlinked → `~/Library/Application Support/Cursor/User/settings.json` |
 | `cursor/mcp.json` | Copied once → `~/.cursor/mcp.json` (not symlinked — GitLens overwrites) |
 | `claude/settings.json` | Copied once → `~/.claude/settings.json` (sanitized template, no secrets) |
-| `claude/plugins.txt` | Read by `claude-setup.sh` to install plugins via CLI |
+| `claude/plugins.txt` | Read by `scripts/claude-setup.sh` to install plugins via CLI |
 | `docs/python-dev-tooling-setup.md` | Reference only |
 | `docs/claude-code-setup.md` | Reference only |
 
@@ -19,10 +19,10 @@ Personal config files for Cursor, Claude Code, and dev tooling docs.
 
 ```sh
 git clone <repo-url> ~/dotfiles
-cd ~/dotfiles && bash setup.sh
+cd ~/dotfiles && bash scripts/setup.sh
 ```
 
-`setup.sh`:
+`scripts/setup.sh`:
 - Installs all Homebrew packages from `Brewfile` (git, gh, node, uv, pyright, snyk, Cursor)
 - Installs Claude Code via npm if not already present
 - Backs up existing Cursor config files (as `.bak`) then symlinks them
@@ -44,3 +44,35 @@ Open Cursor and check:
 - `Cmd+\` — toggle focus between editor and terminal
 - `Ctrl+X Ctrl+C` — new terminal
 - `Ctrl+X M` — maximize panel
+
+## Keybindings reference
+
+<!-- BEGIN: generated keybindings table -->
+<!-- source: cursor/keybindings.json -->
+<!-- generator: gen-keybindings-doc.py — do not edit by hand; re-run the script to regenerate -->
+
+| Chord | Command | When |
+|-------|---------|------|
+| `Cmd+I` | `composerMode.agent` | — |
+| `Shift+enter` | `workbench.action.terminal.sendSequence` | `terminalFocus` |
+| `Ctrl+X M` | `workbench.action.toggleMaximizedPanel` | — |
+| `Ctrl+X M` | `workbench.action.toggleMaximizedPanel` | `terminalFocus` |
+| `Ctrl+X Ctrl+C` | `workbench.action.terminal.new` | — |
+| `Ctrl+X Ctrl+K` | `workbench.action.terminal.kill` | — |
+| `Ctrl+X up` | `workbench.action.terminal.focusPrevious` | — |
+| `Ctrl+X down` | `workbench.action.terminal.focusNext` | — |
+| `Cmd+\` | `workbench.action.terminal.focus` | `editorTextFocus` |
+| `Cmd+\` | `workbench.action.focusActiveEditorGroup` | `terminalFocus` |
+| `Cmd+\` | `-workbench.action.terminal.split` | `terminalFocus` |
+| `Cmd+\` | `workbench.action.focusActiveEditorGroup` | `explorerViewletFocus` |
+| `Ctrl+X Ctrl+Z` | `workbench.action.toggleZenMode` | — |
+| `Ctrl+X Ctrl+G` | `gitlens.showGraphView` | — |
+| `Ctrl+X Ctrl+E` | `workbench.view.explorer` | — |
+| `Ctrl+X Ctrl+T` | `workbench.action.terminal.toggleTerminal` | — |
+| `Ctrl+X Ctrl+S` | `workbench.action.findInFiles` | — |
+| `Ctrl+X Ctrl+I` | `editor.action.indentLines` | `editorTextFocus && !editorReadonly` |
+| `Alt+Shift+P` | `editor.action.moveLinesUpAction` | `editorTextFocus && !editorReadonly` |
+| `Alt+Shift+N` | `editor.action.moveLinesDownAction` | `editorTextFocus && !editorReadonly` |
+| `Ctrl+X Ctrl+P` | `test-navigator.jumpTest` | `editorTextFocus` |
+| `Ctrl+X Ctrl+Shift+P` | `test-navigator.createTest` | `editorTextFocus` |
+<!-- END: generated keybindings table -->

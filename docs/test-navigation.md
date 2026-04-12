@@ -1,7 +1,7 @@
 # Test Navigation in Cursor
 
 A custom extension (`test-navigator`) lives in `cursor/extensions/test-navigator/` and is
-symlinked into `~/.cursor/extensions/` by `setup.sh`.
+symlinked into `~/.cursor/extensions/` by `scripts/setup.sh`.
 
 ## Keybindings
 
@@ -44,7 +44,7 @@ A leading `src/` segment is stripped when building the mirrored path.
 
 ## Installation
 
-Run `setup.sh` (or manually symlink):
+Run `scripts/setup.sh` (or manually symlink):
 
 ```bash
 ln -sf ~/dotfiles/cursor/extensions/test-navigator ~/.cursor/extensions/test-navigator

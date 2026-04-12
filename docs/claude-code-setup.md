@@ -8,10 +8,10 @@ Documents the Claude Code user-level config in this repo (`claude/settings.json`
 
 ```sh
 git clone <repo-url> ~/dotfiles
-cd ~/dotfiles && bash setup.sh
+cd ~/dotfiles && bash scripts/setup.sh
 ```
 
-`setup.sh` calls `claude-setup.sh`, which:
+`scripts/setup.sh` calls `scripts/claude-setup.sh`, which:
 1. Seeds `~/.claude/settings.json` from `claude/settings.json` (skipped if the file already exists)
 2. Installs all 8 plugins via `claude plugin install`
 
@@ -49,7 +49,7 @@ The `claude-api` plugin comes from a non-default marketplace. The `extraKnownMar
 }
 ```
 
-Without this entry, `claude plugin install claude-api@anthropic-agent-skills` will fail on a fresh machine. The `settings.json` template includes it, so seeding the file first and then running the install script is the correct order (which `claude-setup.sh` does).
+Without this entry, `claude plugin install claude-api@anthropic-agent-skills` will fail on a fresh machine. The `settings.json` template includes it, so seeding the file first and then running the install script is the correct order (which `scripts/claude-setup.sh` does).
 
 The `claude-api` plugin provides:
 - **mcp-builder** (`/mcp-builder`) — scaffold and build MCP servers
@@ -132,7 +132,7 @@ This is intentionally **not** in the user-level template because the `--workspac
 
 Cursor's agent mode reads MCP servers from `~/.cursor/mcp.json`. This is **separate** from Claude Code's config.
 
-`setup.sh` seeds this file from `cursor/mcp.json` (copy-once, not a symlink — GitLens overwrites the file on updates and a symlink would cause churn).
+`scripts/setup.sh` seeds this file from `cursor/mcp.json` (copy-once, not a symlink — GitLens overwrites the file on updates and a symlink would cause churn).
 
 ### What's in the Cursor MCP template
 
