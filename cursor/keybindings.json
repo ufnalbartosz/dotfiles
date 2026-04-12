@@ -22,11 +22,6 @@
         "when": "terminalFocus"
     },
     {
-        "key": "alt+cmd+s",
-        "command": "workbench.action.toggleUnifiedSidebarFromKeyboard",
-        "when": "!isAuxiliaryWindowFocusedContext"
-    },
-    {
         "key": "ctrl+x ctrl+c",
         "command": "workbench.action.terminal.new"
     },
@@ -81,6 +76,31 @@
     {
         "key": "ctrl+x ctrl+s",
         "command": "workbench.action.findInFiles"
+    },
+    {
+        "key": "ctrl+x o",
+        "command": "workbench.action.focusFirstEditorGroup",
+        "when": "terminalFocus"
+    },
+    {
+        "key": "ctrl+x o",
+        "command": "workbench.action.focusSecondEditorGroup",
+        "when": "editorTextFocus && activeEditorGroupIndex == 1 && multipleEditorGroups"
+    },
+    {
+        "key": "ctrl+x o",
+        "command": "workbench.action.terminal.focus",
+        "when": "editorTextFocus && activeEditorGroupIndex == 2"
+    },
+    {
+        "key": "ctrl+x o",
+        "command": "workbench.action.terminal.focus",
+        "when": "editorTextFocus && !multipleEditorGroups"
+    },
+    {
+        "key": "ctrl+x o",
+        "command": "workbench.action.focusActiveEditorGroup",
+        "when": "explorerViewletFocus"
     },
     {
         "key": "ctrl+x ctrl+i",
