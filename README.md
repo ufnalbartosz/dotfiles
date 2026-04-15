@@ -33,8 +33,7 @@ cd ~/dotfiles && bash scripts/setup.sh
 After running:
 1. Authenticate GitHub CLI: `gh auth login` (once per machine)
 2. Get your token: `gh auth token`
-3. Paste it into `~/.claude/settings.json` → `GITHUB_PERSONAL_ACCESS_TOKEN`
-4. Paste it into `~/.cursor/mcp.json` → `GITHUB_PERSONAL_ACCESS_TOKEN`
+3. Paste it into `~/.cursor/mcp.json` → `GITHUB_PERSONAL_ACCESS_TOKEN`
 
 See `docs/claude-code-setup.md` for full details on the Claude Code and Cursor MCP setup.
 
@@ -56,11 +55,11 @@ Open Cursor and check:
 | `Cmd+I` | `composerMode.agent` | — |
 | `Shift+enter` | `workbench.action.terminal.sendSequence` | `terminalFocus` |
 | `Ctrl+X M` | `workbench.action.toggleMaximizedPanel` | — |
-| `Ctrl+X M` | `workbench.action.toggleMaximizedPanel` | `terminalFocus` |
-| `Ctrl+X Ctrl+C` | `workbench.action.terminal.new` | — |
-| `Ctrl+X Ctrl+K` | `workbench.action.terminal.kill` | — |
-| `Ctrl+X up` | `workbench.action.terminal.focusPrevious` | — |
-| `Ctrl+X down` | `workbench.action.terminal.focusNext` | — |
+| `Alt+Cmd+S` | `workbench.action.toggleUnifiedSidebarFromKeyboard` | `cursor.agentIdeUnification.enabled == true && !isAuxiliaryWindowFocusedContext` |
+| `Ctrl+X Ctrl+C` | `workbench.action.terminal.new` | `terminalFocus` |
+| `Ctrl+X Ctrl+K` | `workbench.action.terminal.kill` | `terminalFocus` |
+| `Ctrl+X up` | `workbench.action.terminal.focusPrevious` | `terminalFocus` |
+| `Ctrl+X down` | `workbench.action.terminal.focusNext` | `terminalFocus` |
 | `Cmd+\` | `workbench.action.terminal.focus` | `editorTextFocus` |
 | `Cmd+\` | `workbench.action.focusActiveEditorGroup` | `terminalFocus` |
 | `Cmd+\` | `-workbench.action.terminal.split` | `terminalFocus` |
@@ -69,10 +68,24 @@ Open Cursor and check:
 | `Ctrl+X Ctrl+G` | `gitlens.showGraphView` | — |
 | `Ctrl+X Ctrl+E` | `workbench.view.explorer` | — |
 | `Ctrl+X Ctrl+T` | `workbench.action.terminal.toggleTerminal` | — |
-| `Ctrl+X Ctrl+S` | `workbench.action.findInFiles` | — |
+| `Ctrl+X Ctrl+S` | `workbench.action.files.save` | `editorTextFocus` |
+| `Ctrl+X S` | `workbench.action.findInFiles` | — |
+| `Ctrl+X O` | `workbench.action.focusFirstEditorGroup` | `terminalFocus` |
+| `Ctrl+X O` | `workbench.action.focusSecondEditorGroup` | `editorTextFocus && activeEditorGroupIndex == 1 && multipleEditorGroups` |
+| `Ctrl+X O` | `workbench.action.terminal.focus` | `editorTextFocus && activeEditorGroupIndex == 2` |
+| `Ctrl+X O` | `workbench.action.terminal.focus` | `editorTextFocus && !multipleEditorGroups` |
+| `Ctrl+X O` | `workbench.action.focusActiveEditorGroup` | `explorerViewletFocus` |
 | `Ctrl+X Ctrl+I` | `editor.action.indentLines` | `editorTextFocus && !editorReadonly` |
 | `Alt+Shift+P` | `editor.action.moveLinesUpAction` | `editorTextFocus && !editorReadonly` |
 | `Alt+Shift+N` | `editor.action.moveLinesDownAction` | `editorTextFocus && !editorReadonly` |
 | `Ctrl+X Ctrl+P` | `test-navigator.jumpTest` | `editorTextFocus` |
+| `Cmd+.` | `editor.action.revealDefinition` | `editorHasDefinitionProvider && editorTextFocus` |
 | `Ctrl+X Ctrl+Shift+P` | `test-navigator.createTest` | `editorTextFocus` |
+| `Cmd+,` | `-workbench.action.openSettings` | — |
+| `Cmd+,` | `workbench.action.navigateBack` | — |
+| `Cmd+/` | `editor.action.commentLine` | `editorTextFocus && !editorReadonly` |
+| `Ctrl+M` | `-editor.action.toggleTabFocusMode` | — |
+| `Cmd+J` | `workbench.action.togglePanel` | — |
+| `Cmd+J` | `-workbench.action.chat.toggleAgentMode` | — |
+| `escape` | `workbench.action.chat.stopInChatSession` | `inChat` |
 <!-- END: generated keybindings table -->

@@ -1,16 +1,32 @@
 {
-    "window.commandCenter": true,
-    "claudeCode.preferredLocation": "panel",
-    "claudeCode.selectedModel": "default",
-    "claudeCode.initialPermissionMode": "acceptEdits",
-    "editor.cursorBlinking": "solid",
-    "editor.cursorStyle": "block",
-    // "workbench.colorTheme": "Zenburn+ Dark",
-    "workbench.colorTheme": "Default Dark+",
-    "python.testing.pytestEnabled": true,
-    "python.testing.unittestEnabled": false,
-    "testing.openTesting": "neverOpen",
-    "testing.automaticallyOpenTestResults": "neverOpen",
+    // Editor
+    "editor.cursorBlinking":                       "solid",
+    "editor.cursorStyle":                          "block",
+    "editor.unicodeHighlight.ambiguousCharacters": false,
+
+    // File hygiene
+    "files.insertFinalNewline":     true,
+    "files.trimFinalNewlines":      true,
+    "files.trimTrailingWhitespace": true,
+
+    // Git
+    "git.autofetch":                     true,
+    "git.enableSmartCommit":             true,
+    "git.rebaseWhenSync":                true,
+    "git.openRepositoryInParentFolders": "always",
+
+    // Explorer
+    "explorer.confirmDelete":      false,
+    "explorer.confirmDragAndDrop": false,
+
+    // Workbench
+    "window.commandCenter":        true,
+    "workbench.colorTheme":        "Visual Studio Dark",
+    "workbench.startupEditor":     "none",
+    "workbench.statusBar.visible": false,
+    "zenMode.centerLayout":        false,
+
+    // Terminal
     "terminal.integrated.commandsToSkipShell": [
         "workbench.action.toggleMaximizedPanel",
         "workbench.action.toggleZenMode",
@@ -19,6 +35,44 @@
         "workbench.view.explorer",
         "workbench.action.findInFiles"
     ],
-    "workbench.statusBar.visible": false,
-    "zenMode.centerLayout": false
+
+    // Python
+    "python.testing.pytestEnabled":        true,
+    "python.testing.unittestEnabled":      false,
+    "python.createEnvironment.trigger":    "off",
+    "python.terminal.activateEnvironment": false,
+    "testing.openTesting":                  "neverOpen",
+    "testing.automaticallyOpenTestResults": "neverOpen",
+
+    // Claude Code
+    "claudeCode.preferredLocation":     "panel",
+    "claudeCode.selectedModel":         "default",
+    "claudeCode.initialPermissionMode": "acceptEdits",
+
+    // Formatters
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[yaml]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[dockercompose]": {
+        "editor.insertSpaces":     true,
+        "editor.tabSize":          2,
+        "editor.autoIndent":       "advanced",
+        "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
+    "[github-actions-workflow]": {
+        "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
+
+    // Misc
+    "crashReporting.enabled":        "off",
+    "notebook.output.scrolling":     true,
+    "notebook.output.textLineLimit": 50,
+    "makefile.configureOnOpen":      true,
+    "npm.packageManager":            "yarn"
 }

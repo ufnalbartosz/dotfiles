@@ -17,26 +17,32 @@
         "command": "workbench.action.toggleMaximizedPanel"
     },
     {
-        "key": "ctrl+x m",
-        "command": "workbench.action.toggleMaximizedPanel",
+        "key": "alt+cmd+s",
+        "command": "workbench.action.toggleUnifiedSidebarFromKeyboard",
+        "when": "cursor.agentIdeUnification.enabled == true && !isAuxiliaryWindowFocusedContext"
+    },
+    // Terminal management (ctrl+x chords, terminal-scoped)
+    {
+        "key": "ctrl+x ctrl+c",
+        "command": "workbench.action.terminal.new",
         "when": "terminalFocus"
     },
     {
-        "key": "ctrl+x ctrl+c",
-        "command": "workbench.action.terminal.new"
-    },
-    {
         "key": "ctrl+x ctrl+k",
-        "command": "workbench.action.terminal.kill"
+        "command": "workbench.action.terminal.kill",
+        "when": "terminalFocus"
     },
     {
         "key": "ctrl+x up",
-        "command": "workbench.action.terminal.focusPrevious"
+        "command": "workbench.action.terminal.focusPrevious",
+        "when": "terminalFocus"
     },
     {
         "key": "ctrl+x down",
-        "command": "workbench.action.terminal.focusNext"
+        "command": "workbench.action.terminal.focusNext",
+        "when": "terminalFocus"
     },
+    // Toggle focus between editor and terminal
     {
         "key": "cmd+\\",
         "command": "workbench.action.terminal.focus",
@@ -75,6 +81,11 @@
     },
     {
         "key": "ctrl+x ctrl+s",
+        "command": "workbench.action.files.save",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+x s",
         "command": "workbench.action.findInFiles"
     },
     {
@@ -107,6 +118,7 @@
         "command": "editor.action.indentLines",
         "when": "editorTextFocus && !editorReadonly"
     },
+    // Move lines up/down
     {
         "key": "alt+shift+p",
         "command": "editor.action.moveLinesUpAction",
@@ -117,14 +129,50 @@
         "command": "editor.action.moveLinesDownAction",
         "when": "editorTextFocus && !editorReadonly"
     },
+    // --- New bindings below ---
     {
         "key": "ctrl+x ctrl+p",
         "command": "test-navigator.jumpTest",
         "when": "editorTextFocus"
     },
     {
+        "key": "cmd+.",
+        "command": "editor.action.revealDefinition",
+        "when": "editorHasDefinitionProvider && editorTextFocus"
+    },
+    {
         "key": "ctrl+x ctrl+shift+p",
         "command": "test-navigator.createTest",
         "when": "editorTextFocus"
+    },
+    {
+        "key": "cmd+,",
+        "command": "-workbench.action.openSettings"
+    },
+    {
+        "key": "cmd+,",
+        "command": "workbench.action.navigateBack"
+    },
+    {
+        "key": "cmd+/",
+        "command": "editor.action.commentLine",
+        "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+        "key": "ctrl+m",
+        "command": "-editor.action.toggleTabFocusMode"
+    },
+    {
+        "key": "cmd+j",
+        "command": "workbench.action.togglePanel"
+    },
+    {
+        "key": "cmd+j",
+        "command": "-workbench.action.chat.toggleAgentMode"
+    },
+    {
+        "key": "escape",
+        "command": "workbench.action.chat.stopInChatSession",
+        "when": "inChat"
     }
 ]

@@ -13,9 +13,7 @@ cd ~/dotfiles && bash scripts/setup.sh
 
 `scripts/setup.sh` calls `scripts/claude-setup.sh`, which:
 1. Seeds `~/.claude/settings.json` from `claude/settings.json` (skipped if the file already exists)
-2. Installs all 8 plugins via `claude plugin install`
-
-After setup, open `~/.claude/settings.json` and replace `<add-your-token>` with a real GitHub PAT.
+2. Installs all 9 plugins via `claude plugin install`
 
 ---
 
@@ -33,6 +31,7 @@ Installed from `claude/plugins.txt` via `claude plugin install <id>@<marketplace
 | `feature-dev` | `claude-plugins-official` | Guided feature development workflow |
 | `pyright-lsp` | `claude-plugins-official` | Python type checking via Pyright |
 | `claude-api` | `anthropic-agent-skills` | mcp-builder skill + Anthropic SDK helpers |
+| `claude-code-setup` | `claude-plugins-official` | Automation recommender for Claude Code setup |
 
 ### Anthropic Skills marketplace (`claude-api` plugin)
 
@@ -60,37 +59,34 @@ The `claude-api` plugin provides:
 
 ## MCP servers (Claude Code)
 
-Configured in `settings.json` under `mcpServers`. Three servers are included in the template:
+Configured in `settings.json` under `mcpServers`. Two servers are included in the template:
 
 | Server | Package | Notes |
 |--------|---------|-------|
-| `github` | `@modelcontextprotocol/server-github` | Requires `GITHUB_PERSONAL_ACCESS_TOKEN` |
-| `claude-context` | `@anthropic/claude-context` | Provides project context to Claude |
-| `snyk` | `snyk` CLI | Security scanning (requires `snyk` installed) |
+| `ruff` | `mcp-server-analyzer` (via uvx) | Python linting/formatting |
+| `pytest` | `mcp-pytest-runner` (via uvx) | Run pytest from Claude Code |
 
-### GitHub token
+### GitHub integration
 
-After seeding `~/.claude/settings.json`, replace the placeholder:
+GitHub access is provided by the `github@claude-plugins-official` plugin, which handles PRs, issues, and code search without requiring token management.
+
+### Optional: snyk MCP server
+
+Not included in the template (requires `snyk` CLI installed). To add it manually to `~/.claude/settings.json`:
 
 ```json
-"GITHUB_PERSONAL_ACCESS_TOKEN": "<add-your-token>"
+"snyk": {
+  "command": "snyk",
+  "args": ["mcp", "-t", "stdio"]
+}
 ```
 
-**Recommended: use `gh` CLI (no manual PAT needed)**
+### Machine-specific settings
 
-If `gh` is installed and authenticated (`gh auth login`), get the token with:
+These settings are intentionally excluded from the template and must be set per-machine in `~/.claude/settings.json`:
 
-```sh
-gh auth token
-```
-
-Paste that value in place of `<add-your-token>`. The `gho_...` OAuth token managed by `gh` has the same capabilities as a PAT and doesn't expire unless revoked.
-
-Note: `gh auth token` does NOT trigger a login flow if unauthenticated — it just fails. If the token ever stops working, run `gh auth login` again and update the config files.
-
-**Alternative: generate a classic PAT**
-
-GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic). Scopes needed: `repo`, `read:org`.
+- `model` — e.g. `"opus|m"` (depends on available models/subscription)
+- `effortLevel` — e.g. `"high"`
 
 ### LSP plugins vs cclsp MCPs
 
