@@ -95,18 +95,13 @@
     },
     {
         "key": "ctrl+x o",
-        "command": "workbench.action.focusSecondEditorGroup",
-        "when": "editorTextFocus && activeEditorGroupIndex == 1 && multipleEditorGroups"
+        "command": "workbench.action.focusNextGroup",
+        "when": "editorTextFocus && !activeEditorGroupLast"
     },
     {
         "key": "ctrl+x o",
         "command": "workbench.action.terminal.focus",
-        "when": "editorTextFocus && activeEditorGroupIndex == 2"
-    },
-    {
-        "key": "ctrl+x o",
-        "command": "workbench.action.terminal.focus",
-        "when": "editorTextFocus && !multipleEditorGroups"
+        "when": "editorTextFocus && activeEditorGroupLast"
     },
     {
         "key": "ctrl+x o",
