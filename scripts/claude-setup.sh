@@ -23,4 +23,20 @@ while IFS= read -r plugin; do
     claude plugin install "$plugin" || true
 done < "$DOTFILES/claude/plugins.txt"
 
+# Symlink user-level skills from dotfiles
+if [ -d "$DOTFILES/claude/skills" ]; then
+    mkdir -p "$HOME/.claude/skills"
+    for skill_dir in "$DOTFILES/claude/skills"/*/; do
+        [ -d "$skill_dir" ] || continue
+        skill_name="$(basename "$skill_dir")"
+        target="$HOME/.claude/skills/$skill_name"
+        if [ -L "$target" ] || [ ! -e "$target" ]; then
+            ln -sfn "$skill_dir" "$target"
+            echo "  skill linked: $skill_name"
+        else
+            echo "  skill: $skill_name already exists (not a symlink), skipping"
+        fi
+    done
+fi
+
 echo "Claude Code setup done."
