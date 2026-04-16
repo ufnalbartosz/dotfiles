@@ -96,12 +96,12 @@
     {
         "key": "ctrl+x o",
         "command": "workbench.action.focusNextGroup",
-        "when": "editorTextFocus && !activeEditorGroupLast"
+        "when": "editorTextFocus && multipleEditorGroups && !activeEditorGroupLast"
     },
     {
         "key": "ctrl+x o",
         "command": "workbench.action.terminal.focus",
-        "when": "editorTextFocus && activeEditorGroupLast"
+        "when": "editorTextFocus"
     },
     {
         "key": "ctrl+x o",
