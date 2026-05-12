@@ -9,6 +9,7 @@ brew "node"        # Required for npx (MCP servers, Claude Code)
 brew "ripgrep"     # Fast code search
 brew "fzf"         # Interactive fuzzy finder
 brew "bat"         # Syntax-highlighted previews for fzf
+brew "worktrunk"   # Git worktree management
 brew "uv"          # Required for uvx (ruff, pytest MCP servers)
 
 # Python tooling
@@ -16,3 +17,4 @@ brew "pyright"     # Python type checker (used by Claude Code LSP plugin)
 
 # Apps
 cask "cursor"      # Cursor IDE
+cask "iterm2"      # Terminal with semantic history

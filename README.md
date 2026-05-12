@@ -26,7 +26,7 @@ cd ~/dotfiles && bash scripts/setup.sh
 ```
 
 `scripts/setup.sh`:
-- Installs missing Homebrew packages from the core manifest (git, gh, git-delta, ripgrep, fzf, bat, node, uv, pyright, Cursor)
+- Installs missing Homebrew packages from the core manifest (git, gh, git-delta, ripgrep, fzf, bat, worktrunk, node, uv, pyright, Cursor, iTerm2)
 - Skips installs when the expected binary or app already exists, even if it was not installed by Homebrew
 - With `--with-extras`, also installs missing optional packages from `Brewfile.extras` (currently `snyk-cli`)
 - Adds the repo-managed Git config include for delta-powered diffs
@@ -49,6 +49,8 @@ See `docs/claude-code-setup.md` for full details on the Claude Code and Cursor M
 The setup installs and configures:
 - `delta` as the Git pager with side-by-side diffs, line numbers, navigation, and `zdiff3` merge conflicts
 - `rg` / `git grep` for fast code search
+- `worktrunk` (`wt`) for Git worktree management
+- iTerm2 for semantic history / Cmd-click file path workflows
 - `fzf` + `bat` helpers:
   - `p` opens an interactive file picker with syntax-highlighted previews
   - `fif <phrase>` searches file contents with ripgrep and opens the selected match in Vim

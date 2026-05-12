@@ -27,6 +27,7 @@
     "zenMode.centerLayout":        false,
 
     // Terminal
+    "terminal.integrated.enableFileLinks": true,
     "terminal.integrated.commandsToSkipShell": [
         "workbench.action.toggleMaximizedPanel",
         "workbench.action.toggleZenMode",
@@ -75,5 +76,6 @@
     "notebook.output.textLineLimit": 50,
     "makefile.configureOnOpen":      true,
     "npm.packageManager":            "yarn",
-    "window.autoDetectColorScheme":  false
+    "window.autoDetectColorScheme": false,
+    "security.promptForLocalFileProtocolHandling": false
 }

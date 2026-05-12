@@ -73,9 +73,11 @@ if command -v brew &>/dev/null; then
     install_brew_formula_if_missing ripgrep rg
     install_brew_formula_if_missing fzf fzf
     install_brew_formula_if_missing bat bat
+    install_brew_formula_if_missing worktrunk wt
     install_brew_formula_if_missing uv uv
     install_brew_formula_if_missing pyright pyright
     install_brew_cask_if_missing cursor "/Applications/Cursor.app" cursor
+    install_brew_cask_if_missing iterm2 "/Applications/iTerm.app"
 
     if [ "$WITH_EXTRAS" = true ]; then
         echo "Installing optional Homebrew packages..."
