@@ -1,5 +1,5 @@
-# Brewfile — install with: brew bundle
-# Run automatically by setup.sh
+# Core Homebrew package manifest.
+# scripts/setup.sh installs these packages only when their binary/app is missing.
 
 # Core dev tools
 brew "git"

@@ -38,13 +38,48 @@ done
 
 echo "Setting up dotfiles from $DOTFILES"
 
+install_brew_formula_if_missing() {
+    local formula="$1"
+    local binary="$2"
+
+    if command -v "$binary" &>/dev/null; then
+        echo "  $formula: $binary already available, skipping"
+    else
+        echo "  $formula: installing"
+        brew install "$formula"
+    fi
+}
+
+install_brew_cask_if_missing() {
+    local cask="$1"
+    local app_path="$2"
+    local binary="${3:-}"
+
+    if { [ -n "$binary" ] && command -v "$binary" &>/dev/null; } || [ -e "$app_path" ]; then
+        echo "  $cask: already available, skipping"
+    else
+        echo "  $cask: installing"
+        brew install --cask "$cask"
+    fi
+}
+
 # Install Homebrew dependencies
 if command -v brew &>/dev/null; then
     echo "Installing Homebrew packages..."
-    brew bundle --file="$DOTFILES/Brewfile"
+    install_brew_formula_if_missing git git
+    install_brew_formula_if_missing gh gh
+    install_brew_formula_if_missing git-delta delta
+    install_brew_formula_if_missing node node
+    install_brew_formula_if_missing ripgrep rg
+    install_brew_formula_if_missing fzf fzf
+    install_brew_formula_if_missing bat bat
+    install_brew_formula_if_missing uv uv
+    install_brew_formula_if_missing pyright pyright
+    install_brew_cask_if_missing cursor "/Applications/Cursor.app" cursor
+
     if [ "$WITH_EXTRAS" = true ]; then
         echo "Installing optional Homebrew packages..."
-        brew bundle --file="$DOTFILES/Brewfile.extras"
+        install_brew_formula_if_missing snyk-cli snyk
     fi
 else
     echo "  Homebrew not found — install from https://brew.sh then re-run setup.sh"
