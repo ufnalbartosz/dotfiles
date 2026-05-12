@@ -14,8 +14,5 @@ brew "uv"          # Required for uvx (ruff, pytest MCP servers)
 # Python tooling
 brew "pyright"     # Python type checker (used by Claude Code LSP plugin)
 
-# Security
-brew "snyk"        # Security scanning MCP server
-
 # Apps
 cask "cursor"      # Cursor IDE

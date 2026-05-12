@@ -7,6 +7,7 @@ Personal config files for Cursor, Claude Code, and dev tooling docs.
 | Path | How it's applied |
 |------|-----------------|
 | `Brewfile` | Run via `brew bundle` by `scripts/setup.sh` |
+| `Brewfile.extras` | Optional packages installed by `scripts/setup.sh --with-extras` |
 | `git/gitconfig` | Included from `~/.gitconfig` by `scripts/setup.sh` |
 | `shell/terminal-tools.zsh` | Sourced from `~/.zshrc` by `scripts/setup.sh` |
 | `cursor/keybindings.json` | Symlinked → `~/Library/Application Support/Cursor/User/keybindings.json` |
@@ -25,7 +26,8 @@ cd ~/dotfiles && bash scripts/setup.sh
 ```
 
 `scripts/setup.sh`:
-- Installs all Homebrew packages from `Brewfile` (git, gh, git-delta, ripgrep, fzf, bat, node, uv, pyright, snyk, Cursor)
+- Installs all Homebrew packages from `Brewfile` (git, gh, git-delta, ripgrep, fzf, bat, node, uv, pyright, Cursor)
+- With `--with-extras`, also installs optional packages from `Brewfile.extras` (currently `snyk-cli`)
 - Adds the repo-managed Git config include for delta-powered diffs
 - Sources terminal search helpers from `~/.zshrc`
 - Installs Claude Code via npm if not already present

@@ -5,6 +5,36 @@ DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CURSOR_DIR="$HOME/Library/Application Support/Cursor/User"
 ZSHRC="$HOME/.zshrc"
 GITCONFIG="$HOME/.gitconfig"
+WITH_EXTRAS=false
+
+usage() {
+    cat <<EOF
+Usage: $(basename "$0") [--with-extras]
+
+Options:
+  --with-extras
+            Install optional tooling in Brewfile.extras.
+  -h, --help
+            Show this help.
+EOF
+}
+
+for arg in "$@"; do
+    case "$arg" in
+        --with-extras)
+            WITH_EXTRAS=true
+            ;;
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        *)
+            echo "Unknown option: $arg" >&2
+            usage >&2
+            exit 2
+            ;;
+    esac
+done
 
 echo "Setting up dotfiles from $DOTFILES"
 
@@ -12,6 +42,10 @@ echo "Setting up dotfiles from $DOTFILES"
 if command -v brew &>/dev/null; then
     echo "Installing Homebrew packages..."
     brew bundle --file="$DOTFILES/Brewfile"
+    if [ "$WITH_EXTRAS" = true ]; then
+        echo "Installing optional Homebrew packages..."
+        brew bundle --file="$DOTFILES/Brewfile.extras"
+    fi
 else
     echo "  Homebrew not found — install from https://brew.sh then re-run setup.sh"
 fi

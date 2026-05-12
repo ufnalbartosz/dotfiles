@@ -1,0 +1,4 @@
+# Optional Homebrew dependencies — install with: scripts/setup.sh --with-extras
+
+# Security
+brew "snyk-cli"    # Security scanning CLI / MCP server
