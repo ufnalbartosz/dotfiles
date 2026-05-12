@@ -7,6 +7,8 @@ Personal config files for Cursor, Claude Code, and dev tooling docs.
 | Path | How it's applied |
 |------|-----------------|
 | `Brewfile` | Run via `brew bundle` by `scripts/setup.sh` |
+| `git/gitconfig` | Included from `~/.gitconfig` by `scripts/setup.sh` |
+| `shell/terminal-tools.zsh` | Sourced from `~/.zshrc` by `scripts/setup.sh` |
 | `cursor/keybindings.json` | Symlinked → `~/Library/Application Support/Cursor/User/keybindings.json` |
 | `cursor/settings.json` | Symlinked → `~/Library/Application Support/Cursor/User/settings.json` |
 | `cursor/mcp.json` | Copied once → `~/.cursor/mcp.json` (not symlinked — GitLens overwrites) |
@@ -23,7 +25,9 @@ cd ~/dotfiles && bash scripts/setup.sh
 ```
 
 `scripts/setup.sh`:
-- Installs all Homebrew packages from `Brewfile` (git, gh, node, uv, pyright, snyk, Cursor)
+- Installs all Homebrew packages from `Brewfile` (git, gh, git-delta, ripgrep, fzf, bat, node, uv, pyright, snyk, Cursor)
+- Adds the repo-managed Git config include for delta-powered diffs
+- Sources terminal search helpers from `~/.zshrc`
 - Installs Claude Code via npm if not already present
 - Backs up existing Cursor config files (as `.bak`) then symlinks them
 - Seeds `~/.cursor/mcp.json` from template (skipped if already exists)
@@ -36,6 +40,15 @@ After running:
 3. Paste it into `~/.cursor/mcp.json` → `GITHUB_PERSONAL_ACCESS_TOKEN`
 
 See `docs/claude-code-setup.md` for full details on the Claude Code and Cursor MCP setup.
+
+## Terminal tools
+
+The setup installs and configures:
+- `delta` as the Git pager with side-by-side diffs, line numbers, navigation, and `zdiff3` merge conflicts
+- `rg` / `git grep` for fast code search
+- `fzf` + `bat` helpers:
+  - `p` opens an interactive file picker with syntax-highlighted previews
+  - `fif <phrase>` searches file contents with ripgrep and opens the selected match in Vim
 
 ## Verify keybindings
 

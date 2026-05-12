@@ -13,7 +13,7 @@ cd ~/dotfiles && bash scripts/setup.sh
 
 `scripts/setup.sh` calls `scripts/claude-setup.sh`, which:
 1. Seeds `~/.claude/settings.json` from `claude/settings.json` (skipped if the file already exists)
-2. Installs all 9 plugins via `claude plugin install`
+2. Installs all 10 plugins via `claude plugin install`
 
 ---
 
@@ -30,6 +30,7 @@ Installed from `claude/plugins.txt` via `claude plugin install <id>@<marketplace
 | `commit-commands` | `claude-plugins-official` | `/commit`, `/commit-push-pr` slash commands |
 | `feature-dev` | `claude-plugins-official` | Guided feature development workflow |
 | `pyright-lsp` | `claude-plugins-official` | Python type checking via Pyright |
+| `superpowers` | `claude-plugins-official` | Agentic development workflows and skills |
 | `claude-api` | `anthropic-agent-skills` | mcp-builder skill + Anthropic SDK helpers |
 | `claude-code-setup` | `claude-plugins-official` | Automation recommender for Claude Code setup |
 

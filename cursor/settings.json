@@ -74,5 +74,6 @@
     "notebook.output.scrolling":     true,
     "notebook.output.textLineLimit": 50,
     "makefile.configureOnOpen":      true,
-    "npm.packageManager":            "yarn"
+    "npm.packageManager":            "yarn",
+    "window.autoDetectColorScheme":  false
 }

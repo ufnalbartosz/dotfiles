@@ -3,6 +3,8 @@ set -euo pipefail
 
 DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CURSOR_DIR="$HOME/Library/Application Support/Cursor/User"
+ZSHRC="$HOME/.zshrc"
+GITCONFIG="$HOME/.gitconfig"
 
 echo "Setting up dotfiles from $DOTFILES"
 
@@ -12,6 +14,29 @@ if command -v brew &>/dev/null; then
     brew bundle --file="$DOTFILES/Brewfile"
 else
     echo "  Homebrew not found — install from https://brew.sh then re-run setup.sh"
+fi
+
+# Source shell tools from ~/.zshrc without taking ownership of the whole file
+touch "$ZSHRC"
+shell_source="[ -f \"$DOTFILES/shell/terminal-tools.zsh\" ] && source \"$DOTFILES/shell/terminal-tools.zsh\""
+if grep -Fq "shell/terminal-tools.zsh" "$ZSHRC"; then
+    echo "  .zshrc: terminal tools already sourced"
+else
+    {
+        printf "\n# Dotfiles terminal tools: fzf, bat, ripgrep\n"
+        printf "%s\n" "$shell_source"
+    } >> "$ZSHRC"
+    echo "  .zshrc: added terminal tools source"
+fi
+
+# Include repo-managed Git config without replacing personal ~/.gitconfig
+touch "$GITCONFIG"
+git_include_path="$DOTFILES/git/gitconfig"
+if git config --file "$GITCONFIG" --get-all include.path 2>/dev/null | grep -Fxq "$git_include_path"; then
+    echo "  .gitconfig: dotfiles include already present"
+else
+    git config --file "$GITCONFIG" --add include.path "$git_include_path"
+    echo "  .gitconfig: added dotfiles include"
 fi
 
 # Install Claude Code (requires node)
