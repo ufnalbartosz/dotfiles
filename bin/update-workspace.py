@@ -56,12 +56,28 @@ DESIRED_SETTINGS: dict[str, Any] = {
 # path is the cause of the invalid-interpreter popups, so we never let one persist.
 REMOVE_SETTINGS = ("python.defaultInterpreterPath",)
 
+# Machine/org-specific settings (GitHub Enterprise URI, proxies, …) stay out of
+# the repo: put them in this untracked overlay and they win over DESIRED_SETTINGS.
+LOCAL_SETTINGS_PATH = Path.home() / ".config" / "dotfiles" / "workspace.settings.json"
+
+
+def local_settings() -> dict[str, Any]:
+    if not LOCAL_SETTINGS_PATH.exists():
+        return {}
+    try:
+        loaded = json.loads(LOCAL_SETTINGS_PATH.read_text())
+    except json.JSONDecodeError as error:
+        print(f"Ignoring {LOCAL_SETTINGS_PATH}: {error}")
+        return {}
+    return loaded if isinstance(loaded, dict) else {}
+
 
 def ensure_settings(settings: dict[str, Any]) -> dict[str, Any]:
     merged = dict(settings)
     for key in REMOVE_SETTINGS:
         merged.pop(key, None)
     merged.update(DESIRED_SETTINGS)
+    merged.update(local_settings())
     return merged
 
 

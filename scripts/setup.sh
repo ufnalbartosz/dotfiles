@@ -118,7 +118,8 @@ if command -v npm &>/dev/null && ! command -v claude &>/dev/null; then
 fi
 
 # Expose the Codex app-bundled CLI in shells that do not inherit the app PATH.
-CODEX_APP_CLI="/Applications/Codex.app/Contents/Resources/codex"
+# Override CODEX_APP_CLI if the app lives somewhere else.
+CODEX_APP_CLI="${CODEX_APP_CLI:-/Applications/Codex.app/Contents/Resources/codex}"
 LOCAL_BIN="$HOME/.local/bin"
 if ! command -v codex &>/dev/null && [ -x "$CODEX_APP_CLI" ]; then
     mkdir -p "$LOCAL_BIN"

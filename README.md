@@ -72,6 +72,8 @@ The setup installs and configures:
 
 `update-workspace.py` is repo-agnostic: it reads the target `.code-workspace` from `$DOTFILES_WORKSPACE_FILE` or `~/.config/dotfiles/workspace.conf` (a single line holding the path). With neither set it's a no-op, so the hooks are safe on any machine.
 
+Machine- or org-specific editor settings (a GitHub Enterprise URI, proxies, …) don't belong in the repo: put them in the untracked `~/.config/dotfiles/workspace.settings.json` and every workspace refresh merges them in on top of the defaults. Similarly, the Codex CLI link honors a `$CODEX_APP_CLI` override if the app lives outside `/Applications`.
+
 Because the hooks drop `CLAUDE.md` and `.envrc` into each worktree as untracked files, add both to your global gitignore (`core.excludesfile`, e.g. `~/.gitignore_global`) — otherwise `wt remove` treats them as uncommitted changes and refuses to clean up. (Trade-off: in a repo that doesn't yet track its `CLAUDE.md`, you'll need `git add -f CLAUDE.md` to start.)
 
 ## Verify keybindings
