@@ -63,6 +63,24 @@ install_brew_cask_if_missing() {
     fi
 }
 
+# Symlink src to dest, backing up a pre-existing real file as .bak.
+# -n replaces an existing symlink instead of following it.
+link_file() {
+    local src="$1" dest="$2" label="$3"
+    mkdir -p "$(dirname "$dest")"
+    if [ -L "$dest" ]; then
+        ln -sfn "$src" "$dest"
+        echo "  $label: symlink refreshed"
+    elif [ -e "$dest" ]; then
+        mv "$dest" "$dest.bak"
+        ln -s "$src" "$dest"
+        echo "  $label: backed up existing to $dest.bak, symlinked"
+    else
+        ln -s "$src" "$dest"
+        echo "  $label: symlinked"
+    fi
+}
+
 # Install Homebrew dependencies
 if command -v brew &>/dev/null; then
     echo "Installing Homebrew packages..."
@@ -131,24 +149,8 @@ fi
 mkdir -p "$CURSOR_DIR"
 
 for file in keybindings.json settings.json; do
-    src="$DOTFILES/cursor/$file"
-    dest="$CURSOR_DIR/$file"
-
-    if [ -L "$dest" ]; then
-        echo "  $file: already a symlink, skipping"
-    elif [ -f "$dest" ]; then
-        backup="$dest.bak"
-        echo "  $file: backing up existing file to $backup"
-        mv "$dest" "$backup"
-        ln -s "$src" "$dest"
-        echo "  $file: symlinked"
-    else
-        ln -s "$src" "$dest"
-        echo "  $file: symlinked"
-    fi
+    link_file "$DOTFILES/cursor/$file" "$CURSOR_DIR/$file" "$file"
 done
-
-echo "Done."
 
 # Seed ~/.cursor/mcp.json (copy-once — GitLens overwrites on updates)
 if [ ! -f "$HOME/.cursor/mcp.json" ]; then
@@ -175,22 +177,6 @@ done
 # worktrunk pre-start hooks copy CLAUDE.md and share the main worktree's .venv
 # (symlink) into each new worktree, and drop a direnv .envrc so terminals
 # auto-activate it; post-start refreshes the multi-root .code-workspace.
-link_file() {
-    local src="$1" dest="$2" label="$3"
-    mkdir -p "$(dirname "$dest")"
-    if [ -L "$dest" ]; then
-        ln -sf "$src" "$dest"
-        echo "  $label: symlink refreshed"
-    elif [ -e "$dest" ]; then
-        mv "$dest" "$dest.bak"
-        ln -s "$src" "$dest"
-        echo "  $label: backed up existing to $dest.bak, symlinked"
-    else
-        ln -s "$src" "$dest"
-        echo "  $label: symlinked"
-    fi
-}
-
 link_file "$DOTFILES/worktrunk/config.toml" "$HOME/.config/worktrunk/config.toml" "worktrunk config"
 link_file "$DOTFILES/bin/update-workspace.py" "$HOME/.local/bin/update-workspace.py" "update-workspace.py"
 
@@ -206,3 +192,5 @@ fi
 
 # Claude Code setup
 bash "$DOTFILES/scripts/claude-setup.sh"
+
+echo "Done."
