@@ -1,5 +1,9 @@
 # Terminal search and preview tools.
 
+# direnv: auto-activate the per-worktree .envrc (shared venv) on cd. Guarded so
+# the shell still starts cleanly if direnv isn't installed yet.
+if command -v direnv >/dev/null 2>&1; then eval "$(direnv hook zsh)"; fi
+
 # Quick file search with preview using fzf and bat.
 alias p="fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
 

@@ -10,6 +10,7 @@ brew "ripgrep"     # Fast code search
 brew "fzf"         # Interactive fuzzy finder
 brew "bat"         # Syntax-highlighted previews for fzf
 brew "worktrunk"   # Git worktree management
+brew "direnv"      # Per-directory env: auto-activates each worktree's .venv on cd
 brew "uv"          # Required for uvx (ruff, pytest MCP servers)
 
 # Python tooling

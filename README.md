@@ -26,7 +26,7 @@ cd ~/dotfiles && bash scripts/setup.sh
 ```
 
 `scripts/setup.sh`:
-- Installs missing Homebrew packages from the core manifest (git, gh, git-delta, ripgrep, fzf, bat, worktrunk, node, uv, pyright, Cursor, iTerm2)
+- Installs missing Homebrew packages from the core manifest (git, gh, git-delta, ripgrep, fzf, bat, worktrunk, direnv, node, uv, pyright, Cursor, iTerm2)
 - Skips installs when the expected binary or app already exists, even if it was not installed by Homebrew
 - With `--with-extras`, also installs missing optional packages from `Brewfile.extras` (currently `snyk-cli`)
 - Adds the repo-managed Git config include for delta-powered diffs
