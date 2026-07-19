@@ -1,0 +1,23 @@
+post-start = "python3 $HOME/.local/bin/update-workspace.py"
+post-remove = "python3 $HOME/.local/bin/update-workspace.py"
+
+# Carry an untracked CLAUDE.md into every new worktree, in any repo.
+# Copies only when: the new worktree doesn't already have one (so tracked
+# CLAUDE.md, already checked out by git, is left alone) AND the main worktree
+# actually has one. Otherwise it's a no-op. `|| true` keeps it from ever
+# blocking the switch.
+[pre-start]
+claudemd = "test ! -e CLAUDE.md && test -e '{{ primary_worktree_path }}/CLAUDE.md' && cp '{{ primary_worktree_path }}/CLAUDE.md' . || true"
+
+# Share the main worktree's .venv instead of re-creating one per worktree.
+# Symlink only when the worktree has no .venv yet AND the main worktree has one.
+# The venv's scripts are absolute-path-pinned to main's .venv, so a symlink
+# resolves correctly everywhere; a copy would break. To give a branch its own
+# isolated deps later: `rm .venv && uv sync` inside that worktree.
+venv = "test ! -e .venv && test -d '{{ primary_worktree_path }}/.venv' && ln -s '{{ primary_worktree_path }}/.venv' .venv || true"
+
+# Drop a direnv .envrc so a plain terminal auto-activates the venv on `cd` in.
+# Uses direnv's PATH_add/VIRTUAL_ENV idiom (clean enter/leave). Auto-`direnv
+# allow`s what we just wrote, so no manual approval per worktree. No-op if the
+# repo has no venv or direnv isn't installed.
+direnv = '''test -d "{{ primary_worktree_path }}/.venv" && { printf 'export VIRTUAL_ENV="$PWD/.venv"\nPATH_add "$PWD/.venv/bin"\n' > .envrc; command -v direnv >/dev/null && direnv allow . ; } || true'''

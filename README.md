@@ -13,6 +13,8 @@ Personal config files for Cursor, Claude Code, and dev tooling docs.
 | `cursor/keybindings.json` | Symlinked → `~/Library/Application Support/Cursor/User/keybindings.json` |
 | `cursor/settings.json` | Symlinked → `~/Library/Application Support/Cursor/User/settings.json` |
 | `cursor/mcp.json` | Copied once → `~/.cursor/mcp.json` (not symlinked — GitLens overwrites) |
+| `worktrunk/config.toml` | Symlinked → `~/.config/worktrunk/config.toml` — worktree hooks (CLAUDE.md copy, shared `.venv`, direnv `.envrc`) |
+| `bin/update-workspace.py` | Symlinked → `~/.local/bin/update-workspace.py` — refreshes the multi-root `.code-workspace`; reads `~/.config/dotfiles/workspace.conf` |
 | `claude/settings.json` | Copied once → `~/.claude/settings.json` (sanitized template, no secrets) |
 | `claude/plugins.txt` | Read by `scripts/claude-setup.sh` to install plugins via CLI |
 | `docs/python-dev-tooling-setup.md` | Reference only |
@@ -37,6 +39,8 @@ cd ~/dotfiles && bash scripts/setup.sh
 - Seeds `~/.cursor/mcp.json` from template (skipped if already exists)
 - Seeds `~/.claude/settings.json` from template (skipped if already exists)
 - Installs all Claude Code plugins via `claude plugin install`
+- Symlinks the worktrunk config (`~/.config/worktrunk/config.toml`) and the workspace updater (`~/.local/bin/update-workspace.py`), backing up any existing files
+- Prints how to set `~/.config/dotfiles/workspace.conf` if the workspace updater isn't pointed at a `.code-workspace` yet
 
 After running:
 1. Authenticate GitHub CLI: `gh auth login` (once per machine)
@@ -56,6 +60,19 @@ The setup installs and configures:
 - `fzf` + `bat` helpers:
   - `p` opens an interactive file picker with syntax-highlighted previews
   - `fif <phrase>` searches file contents with ripgrep and opens the selected match in Vim
+
+## Worktree workflow
+
+`worktrunk` (`wt`) drives Git worktrees; `worktrunk/config.toml` adds hooks that make every new worktree usable immediately:
+
+- **CLAUDE.md** — copied in from the main worktree (it's untracked, so git won't carry it).
+- **Shared `.venv`** — symlinked to the main worktree's venv instead of re-running `uv sync`. The venv's scripts are absolute-path-pinned, so a symlink resolves everywhere; a copy would break. A branch that needs different deps gets its own: `rm .venv && uv sync`.
+- **direnv `.envrc`** — written and auto-`direnv allow`ed so a plain terminal activates the venv on `cd` in. Requires the `direnv` shell hook (added by `shell/terminal-tools.zsh`).
+- **Workspace refresh** — `post-start`/`post-remove` run `update-workspace.py` to keep the multi-root `.code-workspace` in sync with current worktrees, and to ensure editor settings (no global Python interpreter — each folder auto-detects its own `.venv`; Path Intellisense; markdown path completion).
+
+`update-workspace.py` is repo-agnostic: it reads the target `.code-workspace` from `$DOTFILES_WORKSPACE_FILE` or `~/.config/dotfiles/workspace.conf` (a single line holding the path). With neither set it's a no-op, so the hooks are safe on any machine.
+
+Because the hooks drop `CLAUDE.md` and `.envrc` into each worktree as untracked files, add both to your global gitignore (`core.excludesfile`, e.g. `~/.gitignore_global`) — otherwise `wt remove` treats them as uncommitted changes and refuses to clean up. (Trade-off: in a repo that doesn't yet track its `CLAUDE.md`, you'll need `git add -f CLAUDE.md` to start.)
 
 ## Verify keybindings
 

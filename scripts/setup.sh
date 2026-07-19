@@ -168,5 +168,38 @@ for ext in "$DOTFILES/cursor/extensions"/*/; do
     echo "  extension: symlinked $ext_name"
 done
 
+# Worktree workflow: worktrunk hooks + workspace updater script
+# worktrunk pre-start hooks copy CLAUDE.md and share the main worktree's .venv
+# (symlink) into each new worktree, and drop a direnv .envrc so terminals
+# auto-activate it; post-start refreshes the multi-root .code-workspace.
+link_file() {
+    local src="$1" dest="$2" label="$3"
+    mkdir -p "$(dirname "$dest")"
+    if [ -L "$dest" ]; then
+        ln -sf "$src" "$dest"
+        echo "  $label: symlink refreshed"
+    elif [ -e "$dest" ]; then
+        mv "$dest" "$dest.bak"
+        ln -s "$src" "$dest"
+        echo "  $label: backed up existing to $dest.bak, symlinked"
+    else
+        ln -s "$src" "$dest"
+        echo "  $label: symlinked"
+    fi
+}
+
+link_file "$DOTFILES/worktrunk/config.toml" "$HOME/.config/worktrunk/config.toml" "worktrunk config"
+link_file "$DOTFILES/bin/update-workspace.py" "$HOME/.local/bin/update-workspace.py" "update-workspace.py"
+
+# The workspace updater targets a machine-local .code-workspace. Point it at one
+# via a single-line file (untracked — it holds a machine-specific path).
+WORKSPACE_CONF="$HOME/.config/dotfiles/workspace.conf"
+if [ -f "$WORKSPACE_CONF" ]; then
+    echo "  workspace.conf: already set ($(cat "$WORKSPACE_CONF"))"
+else
+    echo "  workspace.conf: not set — to enable the workspace updater, run:"
+    echo "      mkdir -p ~/.config/dotfiles && echo /path/to/your.code-workspace > $WORKSPACE_CONF"
+fi
+
 # Claude Code setup
 bash "$DOTFILES/scripts/claude-setup.sh"
