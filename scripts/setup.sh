@@ -116,6 +116,15 @@ if command -v npm &>/dev/null && ! command -v claude &>/dev/null; then
     npm install -g @anthropic-ai/claude-code
 fi
 
+# Expose the Codex app-bundled CLI in shells that do not inherit the app PATH.
+CODEX_APP_CLI="/Applications/Codex.app/Contents/Resources/codex"
+LOCAL_BIN="$HOME/.local/bin"
+if ! command -v codex &>/dev/null && [ -x "$CODEX_APP_CLI" ]; then
+    mkdir -p "$LOCAL_BIN"
+    ln -sf "$CODEX_APP_CLI" "$LOCAL_BIN/codex"
+    echo "  codex: linked app-bundled CLI into $LOCAL_BIN"
+fi
+
 # Create Cursor user dir if it doesn't exist (fresh machine)
 mkdir -p "$CURSOR_DIR"
 

@@ -32,6 +32,7 @@ cd ~/dotfiles && bash scripts/setup.sh
 - Adds the repo-managed Git config include for delta-powered diffs
 - Sources terminal search helpers from `~/.zshrc`
 - Installs Claude Code via npm if not already present
+- Links the Codex app-bundled CLI into `~/.local/bin` when needed
 - Backs up existing Cursor config files (as `.bak`) then symlinks them
 - Seeds `~/.cursor/mcp.json` from template (skipped if already exists)
 - Seeds `~/.claude/settings.json` from template (skipped if already exists)
@@ -51,6 +52,7 @@ The setup installs and configures:
 - `rg` / `git grep` for fast code search
 - `worktrunk` (`wt`) for Git worktree management
 - iTerm2 for semantic history / Cmd-click file path workflows
+- Codex CLI from the Codex desktop app bundle, exposed as `codex` on your shell `PATH`
 - `fzf` + `bat` helpers:
   - `p` opens an interactive file picker with syntax-highlighted previews
   - `fif <phrase>` searches file contents with ripgrep and opens the selected match in Vim
