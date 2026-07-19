@@ -10,7 +10,6 @@ if [ ! -f "$HOME/.claude/settings.json" ]; then
     mkdir -p "$HOME/.claude"
     cp "$DOTFILES/claude/settings.json" "$HOME/.claude/settings.json"
     echo "  settings.json: seeded from template"
-    echo "  Edit ~/.claude/settings.json — add GITHUB_PERSONAL_ACCESS_TOKEN"
 else
     echo "  settings.json: already exists, skipping"
 fi
