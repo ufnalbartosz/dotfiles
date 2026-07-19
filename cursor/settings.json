@@ -10,10 +10,12 @@
     "files.trimTrailingWhitespace": true,
 
     // Git
-    "git.autofetch":                     true,
-    "git.enableSmartCommit":             true,
-    "git.rebaseWhenSync":                true,
-    "git.openRepositoryInParentFolders": "always",
+    "git.autofetch":                       true,
+    "git.enableSmartCommit":               true,
+    "git.rebaseWhenSync":                  true,
+    "git.openRepositoryInParentFolders":   "always",
+    "git.blame.editorDecoration.enabled":  true,
+    "git.blame.statusBarItem.enabled":     true,
 
     // Explorer
     "explorer.confirmDelete":      false,
@@ -22,7 +24,7 @@
     // Workbench
     "window.commandCenter":        true,
     "workbench.colorTheme":        "Visual Studio Dark",
-    "workbench.startupEditor": "none",
+    "workbench.startupEditor":     "none",
     "zenMode.centerLayout":        false,
 
     // Terminal
@@ -75,6 +77,9 @@
     "notebook.output.textLineLimit": 50,
     "makefile.configureOnOpen":      true,
     "npm.packageManager":            "yarn",
-    "window.autoDetectColorScheme": false,
-    "security.promptForLocalFileProtocolHandling": false
+    "window.autoDetectColorScheme":  false,
+    "security.promptForLocalFileProtocolHandling": false,
+    "security.workspace.trust.enabled": true,
+    "security.workspace.trust.untrustedFiles": "open",
+    "gitlens.currentLine.enabled": false
 }
