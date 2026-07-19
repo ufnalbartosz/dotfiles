@@ -1,4 +1,8 @@
 {
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
   "permissions": {
     "allow": [
       "WebSearch",
@@ -25,6 +29,10 @@
       }
     }
   },
+  "language": "English (US)",
+  "effortLevel": "high",
+  "tui": "fullscreen",
+  "voiceEnabled": true,
   "enableLsp": true,
   "mcpServers": {
     "ruff": {
