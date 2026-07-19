@@ -17,7 +17,10 @@ jobs:
       - name: Lint Python scripts
         run: |
           python3 -m py_compile bin/update-workspace.py scripts/gen-keybindings-doc.py
-          pipx run ruff check bin scripts
+          pipx run ruff check bin scripts claude/skills
 
       - name: Validate config files
         run: python3 scripts/check-configs.py
+
+      - name: Test dotfiles-drift checker
+        run: bash claude/skills/dotfiles-drift/test.sh

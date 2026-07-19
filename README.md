@@ -17,6 +17,7 @@ Personal config files for Cursor, Claude Code, and dev tooling docs.
 | `bin/update-workspace.py` | Symlinked → `~/.local/bin/update-workspace.py` — refreshes the multi-root `.code-workspace`; reads `~/.config/dotfiles/workspace.conf` |
 | `claude/settings.json` | Copied once → `~/.claude/settings.json` (sanitized template, no secrets) |
 | `claude/plugins.txt` | Read by `scripts/claude-setup.sh` to install plugins via CLI |
+| `claude/skills/*` | Symlinked → `~/.claude/skills/*` — includes `dotfiles-drift` (reconciles live config with these templates) |
 | `docs/python-dev-tooling-setup.md` | Reference only |
 | `docs/claude-code-setup.md` | Reference only |
 
