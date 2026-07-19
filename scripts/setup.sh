@@ -164,7 +164,9 @@ CURSOR_EXT_DIR="$HOME/.cursor/extensions"
 mkdir -p "$CURSOR_EXT_DIR"
 for ext in "$DOTFILES/cursor/extensions"/*/; do
     ext_name=$(basename "$ext")
-    ln -sf "$ext" "$CURSOR_EXT_DIR/$ext_name"
+    # -n: replace an existing symlink instead of following it — without it,
+    # re-running setup drops a self-referential link inside the extension dir.
+    ln -sfn "${ext%/}" "$CURSOR_EXT_DIR/$ext_name"
     echo "  extension: symlinked $ext_name"
 done
 
