@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Shellcheck setup scripts
+        run: shellcheck scripts/*.sh
+
+      - name: Lint Python scripts
+        run: |
+          python3 -m py_compile bin/update-workspace.py scripts/gen-keybindings-doc.py
+          pipx run ruff check bin scripts
+
+      - name: Validate config files
+        run: python3 scripts/check-configs.py
