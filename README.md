@@ -12,7 +12,7 @@ Personal config files for Cursor, Claude Code, and dev tooling docs.
 | `shell/terminal-tools.zsh` | Sourced from `~/.zshrc` by `scripts/setup.sh` |
 | `cursor/keybindings.json` | Symlinked → `~/Library/Application Support/Cursor/User/keybindings.json` |
 | `cursor/settings.json` | Symlinked → `~/Library/Application Support/Cursor/User/settings.json` |
-| `cursor/mcp.json` | Copied once → `~/.cursor/mcp.json` (not symlinked — GitLens overwrites) |
+| `cursor/mcp.json` | Merged → `~/.cursor/mcp.json` by `scripts/merge-cursor-mcp.py` (not symlinked — GitLens rewrites the file; the merge restores dropped servers) |
 | `worktrunk/config.toml` | Symlinked → `~/.config/worktrunk/config.toml` — worktree hooks (CLAUDE.md copy, shared `.venv`, direnv `.envrc`) |
 | `bin/update-workspace.py` | Symlinked → `~/.local/bin/update-workspace.py` — refreshes the multi-root `.code-workspace`; reads `~/.config/dotfiles/workspace.conf` |
 | `claude/settings.json` | Copied once → `~/.claude/settings.json` (sanitized template, no secrets) |
@@ -37,7 +37,7 @@ cd ~/dotfiles && bash scripts/setup.sh
 - Installs Claude Code via npm if not already present
 - Links the Codex app-bundled CLI into `~/.local/bin` when needed
 - Backs up existing Cursor config files (as `.bak`) then symlinks them
-- Seeds `~/.cursor/mcp.json` from template (skipped if already exists)
+- Merges template MCP servers into `~/.cursor/mcp.json`, restoring any that GitLens dropped (live entries and tokens are preserved; a placeholder GitHub token is filled from `gh auth token` when available)
 - Seeds `~/.claude/settings.json` from template (skipped if already exists)
 - Installs all Claude Code plugins via `claude plugin install`
 - Symlinks the worktrunk config (`~/.config/worktrunk/config.toml`) and the workspace updater (`~/.local/bin/update-workspace.py`), backing up any existing files

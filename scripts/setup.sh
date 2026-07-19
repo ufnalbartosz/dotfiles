@@ -152,15 +152,10 @@ for file in keybindings.json settings.json; do
     link_file "$DOTFILES/cursor/$file" "$CURSOR_DIR/$file" "$file"
 done
 
-# Seed ~/.cursor/mcp.json (copy-once — GitLens overwrites on updates)
-if [ ! -f "$HOME/.cursor/mcp.json" ]; then
-    mkdir -p "$HOME/.cursor"
-    cp "$DOTFILES/cursor/mcp.json" "$HOME/.cursor/mcp.json"
-    echo "  mcp.json: seeded from template"
-    echo "  Edit ~/.cursor/mcp.json — add GITHUB_PERSONAL_ACCESS_TOKEN"
-else
-    echo "  ~/.cursor/mcp.json: already exists, skipping"
-fi
+# Merge template MCP servers into ~/.cursor/mcp.json. Can't be a symlink or a
+# copy-once seed: GitLens rewrites the file and silently drops the template
+# servers, so every setup run restores them (live entries and tokens are kept).
+python3 "$DOTFILES/scripts/merge-cursor-mcp.py"
 
 # Symlink custom Cursor extensions
 CURSOR_EXT_DIR="$HOME/.cursor/extensions"
