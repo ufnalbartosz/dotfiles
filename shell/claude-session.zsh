@@ -57,7 +57,8 @@ ccs [name] [options] [-- claude-args...]
                    (--open is accepted as a synonym)
   -S, --no-sleep   leave sleep settings alone
   -l, --list       list ccs sessions: what each is running (or "idle"),
-                   whether it's attached, its path, and the sleep state
+                   whether it's attached, its path, and the sleep state.
+                   Restores sleep if nothing is running (needs sudo)
   -k, --kill NAME  kill a session, restoring sleep if it was the last one
   -k, --kill --all kill every ccs session, then restore sleep
       --restore    restore sleep now, without touching any session
@@ -129,12 +130,15 @@ ccs() {
           "$sname" "$(_ccs_activity "$sname")" "$marker" "${spath/#$HOME/~}"
       done < <(tmux list-sessions -F '#{@ccs}:#{session_name}:#{session_attached}:#{pane_current_path}' 2>/dev/null)
       (( found )) || echo "no ccs sessions"
-      sleep-status
-      # Sleep disabled with nothing running means a session died somewhere ccs
-      # couldn't observe it (plain tmux kill, closed terminal window).
+      # Self-healing: sleep disabled with nothing running means a session died
+      # somewhere ccs couldn't observe it (plain tmux kill, closed window).
+      # Reconcile before reporting, so the status line reflects reality.
+      # Sessions still running keep sleep disabled — _ccs_restore_sleep decides.
       if (( ! found )) && _ccs_sleep_disabled; then
-        echo "ccs: stale — sleep is disabled with no ccs sessions; fix with: ccs --restore"
+        echo "ccs: no ccs sessions but sleep was disabled — restoring"
+        _ccs_restore_sleep
       fi
+      sleep-status
       return 0
       ;;
     kill)

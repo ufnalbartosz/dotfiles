@@ -78,7 +78,8 @@ ccs [name] [options] [-- claude-args...]
                    (--open is accepted as a synonym)
   -S, --no-sleep   leave sleep settings alone
   -l, --list       list ccs sessions: what each is running (or "idle"),
-                   whether it's attached, its path, and the sleep state
+                   whether it's attached, its path, and the sleep state.
+                   Restores sleep if nothing is running (needs sudo)
   -k, --kill NAME  kill a session, restoring sleep if it was the last one
   -k, --kill --all kill every ccs session, then restore sleep
       --restore    restore sleep now, without touching any session
@@ -109,9 +110,11 @@ Because it never attaches, it can't detect the session ending — sleep stays di
 until you attach and exit, or run `sleep-enabled` yourself.
 
 If a session dies somewhere `ccs` can't observe it — a plain `tmux kill-session`, or
-closing the terminal window outright — sleep is left disabled. `ccs --list` detects that
-state (sleep off, no sessions) and says so; `ccs --restore` puts it right without
-touching any session. `ccs --kill --all` tears down every ccs session and restores sleep
+closing the terminal window outright — sleep is left disabled. `ccs --list` reconciles that
+state itself: no sessions and sleep off means it restores sleep on the spot, while any
+running session keeps sleep disabled. `ccs --restore` does the same on demand. Note that
+this makes `--list` capable of a sudo prompt — install the sudoers rule below and it
+stays silent. `ccs --kill --all` tears down every ccs session and restores sleep
 in one go.
 
 Sleep is restored when the session **exits**, not when you detach — so `ctrl-b d` and
