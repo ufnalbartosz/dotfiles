@@ -6,14 +6,18 @@ CURSOR_DIR="$HOME/Library/Application Support/Cursor/User"
 ZSHRC="$HOME/.zshrc"
 GITCONFIG="$HOME/.gitconfig"
 WITH_EXTRAS=false
+WITH_SUDOERS=false
 
 usage() {
     cat <<EOF
-Usage: $(basename "$0") [--with-extras]
+Usage: $(basename "$0") [--with-extras] [--with-sudoers]
 
 Options:
   --with-extras
             Install optional tooling in Brewfile.extras.
+  --with-sudoers
+            Install the sudoers rule allowing passwordless sleep toggling
+            (sleep-disabled / sleep-enabled / ccs). Prompts for sudo.
   -h, --help
             Show this help.
 EOF
@@ -23,6 +27,9 @@ for arg in "$@"; do
     case "$arg" in
         --with-extras)
             WITH_EXTRAS=true
+            ;;
+        --with-sudoers)
+            WITH_SUDOERS=true
             ;;
         -h|--help)
             usage
@@ -93,6 +100,7 @@ if command -v brew &>/dev/null; then
     install_brew_formula_if_missing bat bat
     install_brew_formula_if_missing worktrunk wt
     install_brew_formula_if_missing direnv direnv
+    install_brew_formula_if_missing tmux tmux
     install_brew_formula_if_missing uv uv
     install_brew_formula_if_missing pyright pyright
     install_brew_cask_if_missing cursor "/Applications/Cursor.app" cursor
@@ -108,15 +116,39 @@ fi
 
 # Source shell tools from ~/.zshrc without taking ownership of the whole file
 touch "$ZSHRC"
-shell_source="[ -f \"$DOTFILES/shell/terminal-tools.zsh\" ] && source \"$DOTFILES/shell/terminal-tools.zsh\""
-if grep -Fq "shell/terminal-tools.zsh" "$ZSHRC"; then
-    echo "  .zshrc: terminal tools already sourced"
+for entry in \
+    "terminal-tools.zsh|Dotfiles terminal tools: fzf, bat, ripgrep" \
+    "macos-sleep.zsh|Dotfiles macOS sleep control: sleep-disabled / sleep-enabled" \
+    "claude-session.zsh|Dotfiles Claude session wrapper: ccs"; do
+    shell_file="${entry%%|*}"
+    shell_desc="${entry#*|}"
+    shell_source="[ -f \"$DOTFILES/shell/$shell_file\" ] && source \"$DOTFILES/shell/$shell_file\""
+    if grep -Fq "shell/$shell_file" "$ZSHRC"; then
+        echo "  .zshrc: $shell_file already sourced"
+    else
+        {
+            printf "\n# %s\n" "$shell_desc"
+            printf "%s\n" "$shell_source"
+        } >> "$ZSHRC"
+        echo "  .zshrc: added $shell_file source"
+    fi
+done
+
+# Passwordless sleep toggling for the sleep-* helpers and ccs. Needs sudo, so
+# this is opt-in: re-run with --with-sudoers to install it.
+sudoers_target="/etc/sudoers.d/pmset-nosleep"
+sudoers_src="$DOTFILES/templates/sudoers-pmset-nosleep"
+if [ -f "$sudoers_target" ]; then
+    echo "  sudoers: pmset rule already installed"
+elif [ "$WITH_SUDOERS" = true ]; then
+    if visudo -c -f "$sudoers_src" >/dev/null; then
+        sudo install -m 0440 -o root -g wheel "$sudoers_src" "$sudoers_target"
+        echo "  sudoers: installed pmset rule"
+    else
+        echo "  sudoers: $sudoers_src failed validation, not installed" >&2
+    fi
 else
-    {
-        printf "\n# Dotfiles terminal tools: fzf, bat, ripgrep\n"
-        printf "%s\n" "$shell_source"
-    } >> "$ZSHRC"
-    echo "  .zshrc: added terminal tools source"
+    echo "  sudoers: pmset rule not installed (re-run with --with-sudoers)"
 fi
 
 # Include repo-managed Git config without replacing personal ~/.gitconfig

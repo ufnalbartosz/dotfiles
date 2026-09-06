@@ -10,6 +10,9 @@ Personal config files for Cursor, Claude Code, and dev tooling docs.
 | `Brewfile.extras` | Optional package manifest mirrored by `scripts/setup.sh --with-extras` |
 | `git/gitconfig` | Included from `~/.gitconfig` by `scripts/setup.sh` |
 | `shell/terminal-tools.zsh` | Sourced from `~/.zshrc` by `scripts/setup.sh` |
+| `shell/macos-sleep.zsh` | Sourced from `~/.zshrc` by `scripts/setup.sh` — `sleep-disabled` / `sleep-enabled` / `sleep-status` |
+| `shell/claude-session.zsh` | Sourced from `~/.zshrc` by `scripts/setup.sh` — the `ccs` tmux + Claude wrapper |
+| `templates/sudoers-pmset-nosleep` | Installed → `/etc/sudoers.d/pmset-nosleep` by `scripts/setup.sh --with-sudoers` |
 | `cursor/keybindings.json` | Symlinked → `~/Library/Application Support/Cursor/User/keybindings.json` |
 | `cursor/settings.json` | Symlinked → `~/Library/Application Support/Cursor/User/settings.json` |
 | `cursor/mcp.json` | Merged → `~/.cursor/mcp.json` by `scripts/merge-cursor-mcp.py` (not symlinked — GitLens rewrites the file; the merge restores dropped servers) |
@@ -61,6 +64,81 @@ The setup installs and configures:
 - `fzf` + `bat` helpers:
   - `p` opens an interactive file picker with syntax-highlighted previews
   - `fif <phrase>` searches file contents with ripgrep and opens the selected match in Vim
+
+## Claude sessions (`ccs`)
+
+Long Claude Code runs happen in tmux with the Mac kept awake. `ccs` bundles that:
+
+```
+ccs [name] [options] [-- claude-args...]
+
+  name             session name (default: current directory name)
+  -r, --resume     start claude with --resume
+      --start      create the session detached and stay in this shell
+                   (--open is accepted as a synonym)
+  -S, --no-sleep   leave sleep settings alone
+  -l, --list       list ccs sessions: what each is running (or "idle"),
+                   whether it's attached, its path, and the sleep state
+  -k, --kill NAME  kill a session, restoring sleep if it was the last one
+  -h, --help       show this
+```
+
+`cd` into a project and run `ccs`: it disables sleep, creates or re-attaches a tmux
+session named after the directory, and starts Claude in it. Quitting Claude drops you
+into a login shell in the project directory, so a crash doesn't take the scrollback
+with it; the session ends when that shell exits.
+
+`ccs --list` shows what each session is actually doing, so you can tell a session
+mid-Claude-run from one sitting at an idle shell:
+
+```
+  SESSION              RUNNING    ATTACHED PATH
+  insider-espi         claude     yes      ~/dev/insider-espi
+  point-in-time        idle       -        ~/dev/point-in-time
+```
+
+`RUNNING` comes from the pane shell's foreground child via `ps`, not tmux's
+`#{pane_current_command}` — Claude Code retitles its process to its version string, so
+tmux reports e.g. `2.1.263` where `ps` still reports `claude`.
+
+`ccs --start` creates the session detached and returns you to your shell, for firing off
+a long run or starting several projects at once; attach later with plain `ccs <name>`.
+Because it never attaches, it can't detect the session ending — sleep stays disabled
+until you attach and exit, or run `sleep-enabled` yourself.
+
+Sleep is restored when the session **exits**, not when you detach — so `ctrl-b d` and
+closing the lid leaves Claude working. Sessions are tagged with a tmux `@ccs` option,
+and sleep only flips back once the last tagged session is gone; unrelated tmux sessions
+are ignored. Killing the terminal window outright bypasses the restore, so
+`sleep-enabled` and `ccs --list` stay available as the manual escape hatch.
+
+The underlying toggles are usable on their own: `sleep-disabled`, `sleep-enabled`,
+`sleep-status`, `sleep-help`. They shell out to `sudo pmset -b disablesleep 0|1`.
+
+### Passwordless sleep toggling (not yet installed)
+
+Without this, `sudo` prompts for a password on session start and usually **again** on
+exit, once its 5-minute timestamp has expired. `templates/sudoers-pmset-nosleep` fixes
+that. Install it with `scripts/setup.sh --with-sudoers`, or directly:
+
+```sh
+sudo install -m 0440 -o root -g wheel \
+    ~/dotfiles/templates/sudoers-pmset-nosleep \
+    /etc/sudoers.d/pmset-nosleep && sudo visudo -c
+```
+
+To undo: `sudo rm /etc/sudoers.d/pmset-nosleep`.
+
+- `install` rather than `cp` because sudo ignores drop-in files that aren't root-owned
+  or that are group/world-writable — `-m 0440 -o root -g wheel` sets all three at once.
+- The destination filename must contain no `.` and not end in `~`, or sudo skips it.
+- `visudo -c` validates the whole sudoers set (main file plus drop-ins) while you still
+  have a working shell to fix things in. It should list `pmset-nosleep` as `parsed OK`;
+  if it doesn't appear, `/etc/sudoers` is missing its `@includedir` line and the rule is
+  inert.
+- The rule grants `NOPASSWD` for two literal command lines only —
+  `/usr/bin/pmset -b disablesleep 1` and `... 0`. No wildcards, so anything else
+  (`pmset -a disablesleep 1`, a bare `sudo pmset`) still requires a password.
 
 ## Worktree workflow
 

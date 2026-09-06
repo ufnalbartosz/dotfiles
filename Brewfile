@@ -11,6 +11,7 @@ brew "fzf"         # Interactive fuzzy finder
 brew "bat"         # Syntax-highlighted previews for fzf
 brew "worktrunk"   # Git worktree management
 brew "direnv"      # Per-directory env: auto-activates each worktree's .venv on cd
+brew "tmux"        # Persistent sessions — required by the ccs Claude wrapper
 brew "uv"          # Required for uvx (ruff, pytest MCP servers)
 
 # Python tooling

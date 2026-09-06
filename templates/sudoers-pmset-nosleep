@@ -1,0 +1,27 @@
+# Installed to /etc/sudoers.d/pmset-nosleep (owner root:wheel, mode 0440).
+#
+# Install with either of:
+#
+#   scripts/setup.sh --with-sudoers
+#
+#   sudo install -m 0440 -o root -g wheel \
+#       ~/dotfiles/templates/sudoers-pmset-nosleep \
+#       /etc/sudoers.d/pmset-nosleep && sudo visudo -c
+#
+# Uninstall with:  sudo rm /etc/sudoers.d/pmset-nosleep
+#
+# Why 'install' and not 'cp': sudo ignores any drop-in file that isn't owned by
+# root or that is group/world-writable, and install sets mode, owner, and group
+# in the same step. The filename must contain no '.' and not end in '~', or sudo
+# skips it silently. The trailing 'visudo -c' validates the whole sudoers set
+# (main file plus every drop-in) while you still have a shell to fix it in; it
+# should list this file as "parsed OK".
+#
+# Lets the sleep-disabled / sleep-enabled helpers (and ccs, which calls them)
+# toggle sleep without a password prompt. Long Claude sessions otherwise get
+# prompted twice: once on start, and again on exit after sudo's 5-minute
+# timestamp has expired.
+#
+# Scoped to these two exact command lines. No wildcards, so it cannot be used
+# to change any other pmset setting.
+bart ALL=(root) NOPASSWD: /usr/bin/pmset -b disablesleep 1, /usr/bin/pmset -b disablesleep 0
