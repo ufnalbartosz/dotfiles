@@ -26,7 +26,7 @@ failures = []
 
 def check_jsonc(rel_path: str) -> None:
     path = REPO / rel_path
-    text = re.sub(r"^\s*//.*$", "", path.read_text(), flags=re.M)
+    text = re.sub(r"^\s*//.*$", "", path.read_text(), flags=re.MULTILINE)
     try:
         json.loads(text)
     except json.JSONDecodeError as error:
@@ -50,7 +50,7 @@ def check_brewfile_sync() -> None:
     setup = (REPO / "scripts" / "setup.sh").read_text()
     for brewfile in ("Brewfile", "Brewfile.extras"):
         for kind, name in re.findall(
-            r'^(brew|cask) "([^"]+)"', (REPO / brewfile).read_text(), flags=re.M
+            r'^(brew|cask) "([^"]+)"', (REPO / brewfile).read_text(), flags=re.MULTILINE
         ):
             pattern = rf'install_brew_{"formula" if kind == "brew" else "cask"}_if_missing {re.escape(name)}\b'
             if not re.search(pattern, setup):

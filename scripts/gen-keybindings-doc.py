@@ -8,7 +8,6 @@ The block in README.md is delimited by HTML comment markers; re-running with
 --write is idempotent. If the markers don't exist yet, a new "Keybindings
 reference" section is appended.
 """
-from __future__ import print_function
 
 import json
 import os
@@ -24,7 +23,7 @@ if len(sys.argv) > 1:
     if sys.argv[1] == "--write":
         mode = "write"
     else:
-        print("usage: %s [--write]" % os.path.basename(sys.argv[0]), file=sys.stderr)
+        print(f"usage: {os.path.basename(sys.argv[0])} [--write]", file=sys.stderr)
         sys.exit(2)
 
 BEGIN = "<!-- BEGIN: generated keybindings table -->"
@@ -34,7 +33,7 @@ with open(keybindings_path) as f:
     raw = f.read()
 
 # keybindings.json is JSONC — strip // line comments before parsing.
-stripped = re.sub(r"^\s*//.*$", "", raw, flags=re.M)
+stripped = re.sub(r"^\s*//.*$", "", raw, flags=re.MULTILINE)
 bindings = json.loads(stripped)
 
 MOD_MAP = {
@@ -72,8 +71,8 @@ for b in bindings:
     chord = pretty_key(b.get("key", ""))
     cmd = b.get("command", "")
     when = b.get("when", "")
-    when_cell = "`%s`" % when if when else "—"
-    lines.append("| `%s` | `%s` | %s |" % (chord, cmd, when_cell))
+    when_cell = f"`{when}`" if when else "—"
+    lines.append(f"| `{chord}` | `{cmd}` | {when_cell} |")
 lines.append(END)
 block = "\n".join(lines)
 
@@ -97,4 +96,4 @@ else:
 with open(readme_path, "w") as f:
     f.write(new_readme)
 
-print("README.md: %s" % action, file=sys.stderr)
+print(f"README.md: {action}", file=sys.stderr)
