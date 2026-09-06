@@ -28,6 +28,11 @@ _ccs_activity() {
   print -r -- "${cmd:-?}"
 }
 
+# True when macOS currently has sleep disabled.
+_ccs_sleep_disabled() {
+  [[ "$(pmset -g 2>/dev/null | awk '/SleepDisabled/ {print $2}')" == 1 ]]
+}
+
 # Restore sleep, but only once the last ccs session is gone.
 _ccs_restore_sleep() {
   local -a remaining
@@ -54,6 +59,8 @@ ccs [name] [options] [-- claude-args...]
   -l, --list       list ccs sessions: what each is running (or "idle"),
                    whether it's attached, its path, and the sleep state
   -k, --kill NAME  kill a session, restoring sleep if it was the last one
+  -k, --kill --all kill every ccs session, then restore sleep
+      --restore    restore sleep now, without touching any session
   -h, --help       show this
 
 With no options, ccs creates the session or attaches to an existing one.
@@ -75,6 +82,7 @@ ccs() {
       # No -s short form: too easy to typo against -S/--no-sleep, and both
       # would silently do something plausible.
       --start|--open) action="start" ;;
+      --restore)     action="restore" ;;
       -S|--no-sleep) nosleep=1 ;;
       -l|--list)     action="list" ;;
       -h|--help)     action="help" ;;
@@ -122,15 +130,42 @@ ccs() {
       done < <(tmux list-sessions -F '#{@ccs}:#{session_name}:#{session_attached}:#{pane_current_path}' 2>/dev/null)
       (( found )) || echo "no ccs sessions"
       sleep-status
+      # Sleep disabled with nothing running means a session died somewhere ccs
+      # couldn't observe it (plain tmux kill, closed terminal window).
+      if (( ! found )) && _ccs_sleep_disabled; then
+        echo "ccs: stale — sleep is disabled with no ccs sessions; fix with: ccs --restore"
+      fi
       return 0
       ;;
     kill)
-      tmux kill-session -t "=${kill_target}" 2>/dev/null || {
-        echo "ccs: no such session: $kill_target" >&2
-        return 1
-      }
-      echo "ccs: killed '$kill_target'"
+      if [[ "$kill_target" == "--all" ]]; then
+        local -a doomed
+        doomed=("${(@f)$(_ccs_managed)}")
+        doomed=("${(@)doomed:#}")
+        if (( ! ${#doomed} )); then
+          echo "ccs: no ccs sessions to kill"
+        else
+          local victim
+          for victim in "${doomed[@]}"; do
+            tmux kill-session -t "=${victim}" 2>/dev/null && echo "ccs: killed '$victim'"
+          done
+        fi
+      else
+        tmux kill-session -t "=${kill_target}" 2>/dev/null || {
+          echo "ccs: no such session: $kill_target" >&2
+          return 1
+        }
+        echo "ccs: killed '$kill_target'"
+      fi
       _ccs_restore_sleep
+      return 0
+      ;;
+    restore)
+      local -a live
+      live=("${(@f)$(_ccs_managed)}")
+      live=("${(@)live:#}")
+      (( ${#live} )) && echo "ccs: note — ${#live} ccs session(s) still running"
+      sleep-enabled
       return 0
       ;;
   esac
