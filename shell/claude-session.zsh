@@ -151,11 +151,15 @@ ccs() {
           done
         fi
       else
-        tmux kill-session -t "=${kill_target}" 2>/dev/null || {
+        if tmux kill-session -t "=${kill_target}" 2>/dev/null; then
+          echo "ccs: killed '$kill_target'"
+        else
+          # Already gone — still reconcile sleep below, since the whole point
+          # of the kill (no session, sleep normal) may be half-done.
           echo "ccs: no such session: $kill_target" >&2
+          _ccs_restore_sleep
           return 1
-        }
-        echo "ccs: killed '$kill_target'"
+        fi
       fi
       _ccs_restore_sleep
       return 0
