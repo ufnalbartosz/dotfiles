@@ -1,0 +1,53 @@
+set nocompatible
+syntax on
+filetype plugin indent on
+
+" --- Basics ---
+set number
+set ruler
+set showcmd
+set hidden
+set incsearch hlsearch ignorecase smartcase
+set expandtab shiftwidth=2 tabstop=2 softtabstop=2
+set backspace=indent,eol,start
+set wildmenu
+set mouse=a
+set clipboard=unnamed
+
+" --- Emacs keys in insert mode ---
+inoremap <C-a> <Home>
+inoremap <C-e> <End>
+inoremap <C-f> <Right>
+inoremap <C-b> <Left>
+inoremap <C-n> <Down>
+inoremap <C-p> <Up>
+inoremap <C-d> <Del>
+inoremap <C-k> <C-o>D
+inoremap <M-f> <C-Right>
+inoremap <M-b> <C-Left>
+
+" --- Emacs keys in command-line mode (after pressing :) ---
+cnoremap <C-a> <Home>
+cnoremap <C-e> <End>
+cnoremap <C-f> <Right>
+cnoremap <C-b> <Left>
+cnoremap <C-p> <Up>
+cnoremap <C-n> <Down>
+cnoremap <C-d> <Del>
+cnoremap <C-k> <C-\>e getcmdline()[:getcmdpos()-2]<CR>
+
+" --- Emacs-ish movement in normal mode ---
+" Ctrl-a is vim's "increment number" and Ctrl-e scrolls; remap for line ends.
+nnoremap <C-a> ^
+nnoremap <C-e> $
+vnoremap <C-a> ^
+vnoremap <C-e> $
+nnoremap <C-n> j
+nnoremap <C-p> k
+
+" Easier line ends without Ctrl
+nnoremap H ^
+nnoremap L $
+
+" Clear search highlight
+nnoremap <silent> <Esc><Esc> :nohlsearch<CR>

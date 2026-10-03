@@ -207,6 +207,10 @@ done
 link_file "$DOTFILES/worktrunk/config.toml" "$HOME/.config/worktrunk/config.toml" "worktrunk config"
 link_file "$DOTFILES/bin/update-workspace.py" "$HOME/.local/bin/update-workspace.py" "update-workspace.py"
 
+# Editor/multiplexer configs (Emacs-style keys in both)
+link_file "$DOTFILES/vim/vimrc" "$HOME/.vimrc" "vimrc"
+link_file "$DOTFILES/tmux/tmux.conf" "$HOME/.tmux.conf" "tmux.conf"
+
 # The workspace updater targets a machine-local .code-workspace. Point it at one
 # via a single-line file (untracked — it holds a machine-specific path).
 WORKSPACE_CONF="$HOME/.config/dotfiles/workspace.conf"

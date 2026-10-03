@@ -169,5 +169,57 @@
         "key": "escape",
         "command": "workbench.action.chat.stopInChatSession",
         "when": "inChat"
-    }
+    },
+    // --- Emacs keys without the emacs-mcx extension (editor only) ---
+    // Char/line movement and deletion (macOS has most of these natively; explicit so they hold everywhere)
+    { "key": "ctrl+a", "command": "cursorHome", "when": "editorTextFocus" },
+    { "key": "ctrl+e", "command": "cursorEnd", "when": "editorTextFocus" },
+    { "key": "ctrl+f", "command": "cursorRight", "when": "editorTextFocus" },
+    { "key": "ctrl+b", "command": "cursorLeft", "when": "editorTextFocus" },
+    { "key": "ctrl+n", "command": "cursorDown", "when": "editorTextFocus && !suggestWidgetVisible" },
+    { "key": "ctrl+p", "command": "cursorUp", "when": "editorTextFocus && !suggestWidgetVisible" },
+    { "key": "ctrl+d", "command": "deleteRight", "when": "editorTextFocus && !editorReadonly" },
+    { "key": "ctrl+h", "command": "deleteLeft", "when": "editorTextFocus && !editorReadonly" },
+    { "key": "ctrl+k", "command": "deleteAllRight", "when": "editorTextFocus && !editorReadonly" },
+    { "key": "ctrl+t", "command": "editor.action.transposeLetters", "when": "editorTextFocus && !editorReadonly" },
+    { "key": "ctrl+o", "command": "lineBreakInsert", "when": "editorTextFocus && !editorReadonly" },
+    // Words (Option = Meta)
+    { "key": "alt+f", "command": "cursorWordEndRight", "when": "editorTextFocus" },
+    { "key": "alt+b", "command": "cursorWordStartLeft", "when": "editorTextFocus" },
+    { "key": "alt+d", "command": "deleteWordRight", "when": "editorTextFocus && !editorReadonly" },
+    { "key": "alt+backspace", "command": "deleteWordLeft", "when": "editorTextFocus && !editorReadonly" },
+    { "key": "alt+m", "command": "cursorHome", "when": "editorTextFocus" },
+    { "key": "alt+shift+6", "command": "editor.action.joinLines", "when": "editorTextFocus && !editorReadonly" },
+    { "key": "alt+u", "command": "editor.action.transformToUppercase", "when": "editorTextFocus && !editorReadonly" },
+    { "key": "alt+l", "command": "editor.action.transformToLowercase", "when": "editorTextFocus && !editorReadonly" },
+    { "key": "alt+c", "command": "editor.action.transformToTitlecase", "when": "editorTextFocus && !editorReadonly" },
+    // Buffer / page / paragraph
+    { "key": "alt+shift+,", "command": "cursorTop", "when": "editorTextFocus" },
+    { "key": "alt+shift+.", "command": "cursorBottom", "when": "editorTextFocus" },
+    { "key": "ctrl+v", "command": "cursorPageDown", "when": "editorTextFocus" },
+    { "key": "alt+v", "command": "cursorPageUp", "when": "editorTextFocus" },
+    { "key": "alt+g g", "command": "workbench.action.gotoLine" },
+    { "key": "alt+.", "command": "editor.action.revealDefinition", "when": "editorHasDefinitionProvider && editorTextFocus" },
+    // Search: C-s / C-r open find, then step through matches; C-g / Esc closes it
+    { "key": "ctrl+s", "command": "actions.find", "when": "editorFocus && !findWidgetVisible" },
+    { "key": "ctrl+s", "command": "editor.action.nextMatchFindAction", "when": "editorFocus && findWidgetVisible" },
+    { "key": "ctrl+r", "command": "actions.find", "when": "editorFocus && !findWidgetVisible" },
+    { "key": "ctrl+r", "command": "editor.action.previousMatchFindAction", "when": "editorFocus && findWidgetVisible" },
+    { "key": "alt+shift+5", "command": "editor.action.startFindReplace", "when": "editorFocus" },
+    // Cancel (C-g)
+    { "key": "ctrl+g", "command": "closeFindWidget", "when": "findWidgetVisible" },
+    { "key": "ctrl+g", "command": "removeSecondaryCursors", "when": "editorHasMultipleSelections && textInputFocus" },
+    { "key": "ctrl+g", "command": "cancelSelection", "when": "editorHasSelection && textInputFocus" },
+    { "key": "ctrl+g", "command": "workbench.action.closeQuickOpen", "when": "inQuickOpen" },
+    // Kill/yank through the system clipboard (no kill ring)
+    { "key": "ctrl+w", "command": "editor.action.clipboardCutAction", "when": "editorTextFocus && editorHasSelection && !editorReadonly" },
+    { "key": "alt+w", "command": "editor.action.clipboardCopyAction", "when": "editorTextFocus && editorHasSelection" },
+    { "key": "ctrl+y", "command": "editor.action.clipboardPasteAction", "when": "editorTextFocus && !editorReadonly" },
+    // Undo and select-all
+    { "key": "ctrl+/", "command": "undo", "when": "editorTextFocus && !editorReadonly" },
+    { "key": "ctrl+x u", "command": "undo", "when": "editorTextFocus && !editorReadonly" },
+    { "key": "ctrl+x h", "command": "editor.action.selectAll", "when": "editorTextFocus" },
+    // Region case (C-x C-u / C-x C-l)
+    { "key": "ctrl+x ctrl+u", "command": "editor.action.transformToUppercase", "when": "editorTextFocus && !editorReadonly" },
+    { "key": "ctrl+x ctrl+l", "command": "editor.action.transformToLowercase", "when": "editorTextFocus && !editorReadonly" }
 ]

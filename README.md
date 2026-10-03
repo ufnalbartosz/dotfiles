@@ -16,6 +16,8 @@ Personal config files for Cursor, Claude Code, and dev tooling docs.
 | `cursor/keybindings.json` | Symlinked → `~/Library/Application Support/Cursor/User/keybindings.json` |
 | `cursor/settings.json` | Symlinked → `~/Library/Application Support/Cursor/User/settings.json` |
 | `cursor/mcp.json` | Merged → `~/.cursor/mcp.json` by `scripts/merge-cursor-mcp.py` (not symlinked — GitLens rewrites the file; the merge restores dropped servers) |
+| `vim/vimrc` | Symlinked → `~/.vimrc` — Emacs-style keys in insert/command mode |
+| `tmux/tmux.conf` | Symlinked → `~/.tmux.conf` — Emacs `mode-keys`/`status-keys`, `C-b r` reloads |
 | `worktrunk/config.toml` | Symlinked → `~/.config/worktrunk/config.toml` — worktree hooks (CLAUDE.md copy, shared `.venv`, direnv `.envrc`) |
 | `bin/update-workspace.py` | Symlinked → `~/.local/bin/update-workspace.py` — refreshes the multi-root `.code-workspace`; reads `~/.config/dotfiles/workspace.conf` |
 | `claude/settings.json` | Copied once → `~/.claude/settings.json` (sanitized template, no secrets) |
