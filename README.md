@@ -12,6 +12,8 @@ Personal config files for Cursor, Claude Code, and dev tooling docs.
 | `shell/terminal-tools.zsh` | Sourced from `~/.zshrc` by `scripts/setup.sh` |
 | `shell/macos-sleep.zsh` | Sourced from `~/.zshrc` by `scripts/setup.sh` — `sleep-disabled` / `sleep-enabled` / `sleep-status` |
 | `shell/claude-session.zsh` | Sourced from `~/.zshrc` by `scripts/setup.sh` — the `ccs` tmux + Claude wrapper |
+| `shell/zsh-keys.zsh` | Sourced from `~/.zshrc` by `scripts/setup.sh` — pins the Emacs line-editing keymap (`bindkey -e`) |
+| `scripts/ohmyzsh-setup.sh` | Run by `scripts/setup.sh` — clones zsh-autosuggestions / zsh-syntax-highlighting and sets the `plugins=(...)` list when `~/.zshrc` still has the stock `plugins=(git)` |
 | `templates/sudoers-pmset-nosleep` | Installed → `/etc/sudoers.d/pmset-nosleep` by `scripts/setup.sh --with-sudoers` |
 | `cursor/keybindings.json` | Symlinked → `~/Library/Application Support/Cursor/User/keybindings.json` |
 | `cursor/settings.json` | Symlinked → `~/Library/Application Support/Cursor/User/settings.json` |
@@ -23,8 +25,11 @@ Personal config files for Cursor, Claude Code, and dev tooling docs.
 | `claude/settings.json` | Copied once → `~/.claude/settings.json` (sanitized template, no secrets) |
 | `claude/plugins.txt` | Read by `scripts/claude-setup.sh` to install plugins via CLI |
 | `claude/skills/*` | Symlinked → `~/.claude/skills/*` — includes `dotfiles-drift` (reconciles live config with these templates) |
+| `claude/hooks/*.sh` | Symlinked → `~/.claude/hooks/*.sh` — finish/attention notifications, Python lint + `mypy --strict` after edits, pre-commit lint + test gate (wired up in `claude/settings.json`) |
+| `claude/CLAUDE.md` | Symlinked → `~/.claude/CLAUDE.md` — global Python conventions (uv, ruff, `mypy --strict`, Google docstrings) |
 | `docs/python-dev-tooling-setup.md` | Reference only |
 | `docs/claude-code-setup.md` | Reference only |
+| `docs/claude-code-usage.md` | Reference only — `ccs`, hooks, memory, advisor, zsh/Oh My Zsh, Emacs keys |
 
 ## New machine setup
 
@@ -38,13 +43,14 @@ cd ~/dotfiles && bash scripts/setup.sh
 - Skips installs when the expected binary or app already exists, even if it was not installed by Homebrew
 - With `--with-extras`, also installs missing optional packages from `Brewfile.extras` (currently `snyk-cli`)
 - Adds the repo-managed Git config include for delta-powered diffs
-- Sources terminal search helpers from `~/.zshrc`
+- Installs the Oh My Zsh plugin set (when Oh My Zsh is present) and sources the terminal search helpers and Emacs keymap from `~/.zshrc`
 - Installs Claude Code via npm if not already present
 - Links the Codex app-bundled CLI into `~/.local/bin` when needed
 - Backs up existing Cursor config files (as `.bak`) then symlinks them
 - Merges template MCP servers into `~/.cursor/mcp.json`, restoring any that GitLens dropped (live entries and tokens are preserved; a placeholder GitHub token is filled from `gh auth token` when available)
 - Seeds `~/.claude/settings.json` from template (skipped if already exists)
 - Installs all Claude Code plugins via `claude plugin install`
+- Symlinks the Claude hook scripts into `~/.claude/hooks/` and the global `CLAUDE.md` into `~/.claude/` (never replaces a real file)
 - Symlinks the worktrunk config (`~/.config/worktrunk/config.toml`) and the workspace updater (`~/.local/bin/update-workspace.py`), backing up any existing files
 - Prints how to set `~/.config/dotfiles/workspace.conf` if the workspace updater isn't pointed at a `.code-workspace` yet
 
