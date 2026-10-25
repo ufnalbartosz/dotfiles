@@ -114,12 +114,16 @@ else
     echo "  Homebrew not found — install from https://brew.sh then re-run setup.sh"
 fi
 
+# Oh My Zsh plugins (autosuggestions, syntax highlighting, fzf, z, ...)
+bash "$DOTFILES/scripts/ohmyzsh-setup.sh"
+
 # Source shell tools from ~/.zshrc without taking ownership of the whole file
 touch "$ZSHRC"
 for entry in \
     "terminal-tools.zsh|Dotfiles terminal tools: fzf, bat, ripgrep" \
     "macos-sleep.zsh|Dotfiles macOS sleep control: sleep-disabled / sleep-enabled" \
-    "claude-session.zsh|Dotfiles Claude session wrapper: ccs"; do
+    "claude-session.zsh|Dotfiles Claude session wrapper: ccs" \
+    "zsh-keys.zsh|Dotfiles zsh keymap: Emacs line editing"; do
     shell_file="${entry%%|*}"
     shell_desc="${entry#*|}"
     shell_source="[ -f \"$DOTFILES/shell/$shell_file\" ] && source \"$DOTFILES/shell/$shell_file\""
