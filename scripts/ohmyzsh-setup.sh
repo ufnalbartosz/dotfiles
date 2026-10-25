@@ -15,6 +15,8 @@ echo "Setting up Oh My Zsh plugins..."
 
 if [ ! -d "$OMZ_DIR" ]; then
     echo "  Oh My Zsh not found at $OMZ_DIR — install it first, then re-run:"
+    # The command substitution is meant to be printed literally, not expanded here.
+    # shellcheck disable=SC2016
     echo '      sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"'
     exit 0
 fi
