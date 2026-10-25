@@ -8,3 +8,4 @@ pyright-lsp@claude-plugins-official
 superpowers@claude-plugins-official
 claude-api@anthropic-agent-skills
 claude-code-setup@claude-plugins-official
+exa@claude-plugins-official

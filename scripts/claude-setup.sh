@@ -38,4 +38,27 @@ if [ -d "$DOTFILES/claude/skills" ]; then
     done
 fi
 
+# Symlink hook scripts (referenced from settings.json as $HOME/.claude/hooks/...)
+mkdir -p "$HOME/.claude/hooks"
+for hook in "$DOTFILES/claude/hooks"/*.sh; do
+    [ -f "$hook" ] || continue
+    hook_name="$(basename "$hook")"
+    target="$HOME/.claude/hooks/$hook_name"
+    if [ -L "$target" ] || [ ! -e "$target" ]; then
+        ln -sfn "$hook" "$target"
+        echo "  hook linked: $hook_name"
+    else
+        echo "  hook: $hook_name already exists (not a symlink), skipping"
+    fi
+done
+
+# Symlink the global CLAUDE.md (Python conventions); never clobber a real file
+target="$HOME/.claude/CLAUDE.md"
+if [ -L "$target" ] || [ ! -s "$target" ]; then
+    ln -sfn "$DOTFILES/claude/CLAUDE.md" "$target"
+    echo "  CLAUDE.md: linked"
+else
+    echo "  CLAUDE.md: already exists (not a symlink), skipping"
+fi
+
 echo "Claude Code setup done."

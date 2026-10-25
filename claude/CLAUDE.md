@@ -1,0 +1,7 @@
+# Python conventions
+
+- Use `uv` for everything: `uv init`, `uv add` / `uv remove`, `uv sync`, `uv run <cmd>`. Never `pip install`, `python -m venv`, `virtualenv`, or `poetry`. The virtual environment is the project's `.venv` managed by uv.
+- Lint and format with `ruff` (`uv run ruff check`, `uv run ruff format`).
+- Type-check with `mypy --strict`. Annotate every function signature and avoid `Any`. Add mypy as a dev dependency (`uv add --dev mypy`) when a project lacks it.
+- Docstrings use Google style: a one-line summary, then `Args:`, `Returns:`, `Raises:` sections when applicable. No type annotations inside docstrings; the signature carries them.
+- A hook runs `ruff format`, `ruff check` (with docstring rules) and `mypy --strict` after every `.py` edit and reports problems back. Fix what it reports before moving on.
