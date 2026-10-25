@@ -212,8 +212,8 @@
     { "key": "ctrl+g", "command": "cancelSelection", "when": "editorHasSelection && textInputFocus" },
     { "key": "ctrl+g", "command": "workbench.action.closeQuickOpen", "when": "inQuickOpen" },
     // Kill/yank through the system clipboard (no kill ring)
-    { "key": "ctrl+w", "command": "editor.action.clipboardCutAction", "when": "editorTextFocus && editorHasSelection && !editorReadonly" },
-    { "key": "alt+w", "command": "editor.action.clipboardCopyAction", "when": "editorTextFocus && editorHasSelection" },
+    { "key": "ctrl+w", "command": "runCommands", "args": { "commands": ["editor.action.clipboardCutAction", { "command": "_setContext", "args": ["emacsMark", false] }] }, "when": "editorTextFocus && editorHasSelection && !editorReadonly" },
+    { "key": "alt+w", "command": "runCommands", "args": { "commands": ["editor.action.clipboardCopyAction", "cancelSelection", { "command": "_setContext", "args": ["emacsMark", false] }] }, "when": "editorTextFocus && editorHasSelection" },
     { "key": "ctrl+y", "command": "editor.action.clipboardPasteAction", "when": "editorTextFocus && !editorReadonly" },
     // Undo and select-all
     { "key": "ctrl+/", "command": "undo", "when": "editorTextFocus && !editorReadonly" },
@@ -221,5 +221,25 @@
     { "key": "ctrl+x h", "command": "editor.action.selectAll", "when": "editorTextFocus" },
     // Region case (C-x C-u / C-x C-l)
     { "key": "ctrl+x ctrl+u", "command": "editor.action.transformToUppercase", "when": "editorTextFocus && !editorReadonly" },
-    { "key": "ctrl+x ctrl+l", "command": "editor.action.transformToLowercase", "when": "editorTextFocus && !editorReadonly" }
+    { "key": "ctrl+x ctrl+l", "command": "editor.action.transformToLowercase", "when": "editorTextFocus && !editorReadonly" },
+    // Mark mode (C-Space / C-@): sets the emacsMark context; movement keys then extend the selection.
+    // C-g, Esc, C-w and M-w end it. Must stay after the plain movement bindings (last match wins).
+    { "key": "ctrl+space", "command": "_setContext", "args": ["emacsMark", true], "when": "editorTextFocus && !emacsMark" },
+    { "key": "ctrl+shift+2", "command": "_setContext", "args": ["emacsMark", true], "when": "editorTextFocus && !emacsMark" },
+    { "key": "ctrl+space", "command": "cancelSelection", "when": "editorTextFocus && emacsMark" },
+    { "key": "ctrl+shift+2", "command": "cancelSelection", "when": "editorTextFocus && emacsMark" },
+    { "key": "ctrl+f", "command": "cursorRightSelect", "when": "editorTextFocus && emacsMark" },
+    { "key": "ctrl+b", "command": "cursorLeftSelect", "when": "editorTextFocus && emacsMark" },
+    { "key": "ctrl+n", "command": "cursorDownSelect", "when": "editorTextFocus && emacsMark" },
+    { "key": "ctrl+p", "command": "cursorUpSelect", "when": "editorTextFocus && emacsMark" },
+    { "key": "ctrl+a", "command": "cursorHomeSelect", "when": "editorTextFocus && emacsMark" },
+    { "key": "ctrl+e", "command": "cursorEndSelect", "when": "editorTextFocus && emacsMark" },
+    { "key": "alt+f", "command": "cursorWordEndRightSelect", "when": "editorTextFocus && emacsMark" },
+    { "key": "alt+b", "command": "cursorWordStartLeftSelect", "when": "editorTextFocus && emacsMark" },
+    { "key": "alt+shift+,", "command": "cursorTopSelect", "when": "editorTextFocus && emacsMark" },
+    { "key": "alt+shift+.", "command": "cursorBottomSelect", "when": "editorTextFocus && emacsMark" },
+    { "key": "ctrl+v", "command": "cursorPageDownSelect", "when": "editorTextFocus && emacsMark" },
+    { "key": "alt+v", "command": "cursorPageUpSelect", "when": "editorTextFocus && emacsMark" },
+    { "key": "ctrl+g", "command": "runCommands", "args": { "commands": ["cancelSelection", { "command": "_setContext", "args": ["emacsMark", false] }] }, "when": "textInputFocus && emacsMark" },
+    { "key": "escape", "command": "runCommands", "args": { "commands": ["cancelSelection", { "command": "_setContext", "args": ["emacsMark", false] }] }, "when": "textInputFocus && emacsMark" }
 ]
