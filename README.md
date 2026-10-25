@@ -208,9 +208,8 @@ Open Cursor and check:
 | `Ctrl+X Ctrl+S` | `workbench.action.files.save` | `editorTextFocus` |
 | `Ctrl+X S` | `workbench.action.findInFiles` | — |
 | `Ctrl+X O` | `workbench.action.focusFirstEditorGroup` | `terminalFocus` |
-| `Ctrl+X O` | `workbench.action.focusSecondEditorGroup` | `editorTextFocus && activeEditorGroupIndex == 1 && multipleEditorGroups` |
-| `Ctrl+X O` | `workbench.action.terminal.focus` | `editorTextFocus && activeEditorGroupIndex == 2` |
-| `Ctrl+X O` | `workbench.action.terminal.focus` | `editorTextFocus && !multipleEditorGroups` |
+| `Ctrl+X O` | `workbench.action.focusNextGroup` | `editorTextFocus && multipleEditorGroups && !activeEditorGroupLast` |
+| `Ctrl+X O` | `workbench.action.terminal.focus` | `editorTextFocus` |
 | `Ctrl+X O` | `workbench.action.focusActiveEditorGroup` | `explorerViewletFocus` |
 | `Ctrl+X Ctrl+I` | `editor.action.indentLines` | `editorTextFocus && !editorReadonly` |
 | `Alt+Shift+P` | `editor.action.moveLinesUpAction` | `editorTextFocus && !editorReadonly` |
@@ -225,4 +224,65 @@ Open Cursor and check:
 | `Cmd+J` | `workbench.action.togglePanel` | — |
 | `Cmd+J` | `-workbench.action.chat.toggleAgentMode` | — |
 | `escape` | `workbench.action.chat.stopInChatSession` | `inChat` |
+| `Ctrl+A` | `cursorHome` | `editorTextFocus` |
+| `Ctrl+E` | `cursorEnd` | `editorTextFocus` |
+| `Ctrl+F` | `cursorRight` | `editorTextFocus` |
+| `Ctrl+B` | `cursorLeft` | `editorTextFocus` |
+| `Ctrl+N` | `cursorDown` | `editorTextFocus && !suggestWidgetVisible` |
+| `Ctrl+P` | `cursorUp` | `editorTextFocus && !suggestWidgetVisible` |
+| `Ctrl+D` | `deleteRight` | `editorTextFocus && !editorReadonly` |
+| `Ctrl+H` | `deleteLeft` | `editorTextFocus && !editorReadonly` |
+| `Ctrl+K` | `deleteAllRight` | `editorTextFocus && !editorReadonly` |
+| `Ctrl+T` | `editor.action.transposeLetters` | `editorTextFocus && !editorReadonly` |
+| `Ctrl+O` | `lineBreakInsert` | `editorTextFocus && !editorReadonly` |
+| `Alt+F` | `cursorWordEndRight` | `editorTextFocus` |
+| `Alt+B` | `cursorWordStartLeft` | `editorTextFocus` |
+| `Alt+D` | `deleteWordRight` | `editorTextFocus && !editorReadonly` |
+| `Alt+backspace` | `deleteWordLeft` | `editorTextFocus && !editorReadonly` |
+| `Alt+M` | `cursorHome` | `editorTextFocus` |
+| `Alt+Shift+6` | `editor.action.joinLines` | `editorTextFocus && !editorReadonly` |
+| `Alt+U` | `editor.action.transformToUppercase` | `editorTextFocus && !editorReadonly` |
+| `Alt+L` | `editor.action.transformToLowercase` | `editorTextFocus && !editorReadonly` |
+| `Alt+C` | `editor.action.transformToTitlecase` | `editorTextFocus && !editorReadonly` |
+| `Alt+Shift+,` | `cursorTop` | `editorTextFocus` |
+| `Alt+Shift+.` | `cursorBottom` | `editorTextFocus` |
+| `Ctrl+V` | `cursorPageDown` | `editorTextFocus` |
+| `Alt+V` | `cursorPageUp` | `editorTextFocus` |
+| `Alt+G G` | `workbench.action.gotoLine` | — |
+| `Alt+.` | `editor.action.revealDefinition` | `editorHasDefinitionProvider && editorTextFocus` |
+| `Ctrl+S` | `actions.find` | `editorFocus && !findWidgetVisible` |
+| `Ctrl+S` | `editor.action.nextMatchFindAction` | `editorFocus && findWidgetVisible` |
+| `Ctrl+R` | `actions.find` | `editorFocus && !findWidgetVisible` |
+| `Ctrl+R` | `editor.action.previousMatchFindAction` | `editorFocus && findWidgetVisible` |
+| `Alt+Shift+5` | `editor.action.startFindReplace` | `editorFocus` |
+| `Ctrl+G` | `closeFindWidget` | `findWidgetVisible` |
+| `Ctrl+G` | `removeSecondaryCursors` | `editorHasMultipleSelections && textInputFocus` |
+| `Ctrl+G` | `cancelSelection` | `editorHasSelection && textInputFocus` |
+| `Ctrl+G` | `workbench.action.closeQuickOpen` | `inQuickOpen` |
+| `Ctrl+W` | `runCommands` | `editorTextFocus && editorHasSelection && !editorReadonly` |
+| `Alt+W` | `runCommands` | `editorTextFocus && editorHasSelection` |
+| `Ctrl+Y` | `editor.action.clipboardPasteAction` | `editorTextFocus && !editorReadonly` |
+| `Ctrl+/` | `undo` | `editorTextFocus && !editorReadonly` |
+| `Ctrl+X U` | `undo` | `editorTextFocus && !editorReadonly` |
+| `Ctrl+X H` | `editor.action.selectAll` | `editorTextFocus` |
+| `Ctrl+X Ctrl+U` | `editor.action.transformToUppercase` | `editorTextFocus && !editorReadonly` |
+| `Ctrl+X Ctrl+L` | `editor.action.transformToLowercase` | `editorTextFocus && !editorReadonly` |
+| `Ctrl+space` | `_setContext` | `editorTextFocus && !emacsMark` |
+| `Ctrl+Shift+2` | `_setContext` | `editorTextFocus && !emacsMark` |
+| `Ctrl+space` | `cancelSelection` | `editorTextFocus && emacsMark` |
+| `Ctrl+Shift+2` | `cancelSelection` | `editorTextFocus && emacsMark` |
+| `Ctrl+F` | `cursorRightSelect` | `editorTextFocus && emacsMark` |
+| `Ctrl+B` | `cursorLeftSelect` | `editorTextFocus && emacsMark` |
+| `Ctrl+N` | `cursorDownSelect` | `editorTextFocus && emacsMark` |
+| `Ctrl+P` | `cursorUpSelect` | `editorTextFocus && emacsMark` |
+| `Ctrl+A` | `cursorHomeSelect` | `editorTextFocus && emacsMark` |
+| `Ctrl+E` | `cursorEndSelect` | `editorTextFocus && emacsMark` |
+| `Alt+F` | `cursorWordEndRightSelect` | `editorTextFocus && emacsMark` |
+| `Alt+B` | `cursorWordStartLeftSelect` | `editorTextFocus && emacsMark` |
+| `Alt+Shift+,` | `cursorTopSelect` | `editorTextFocus && emacsMark` |
+| `Alt+Shift+.` | `cursorBottomSelect` | `editorTextFocus && emacsMark` |
+| `Ctrl+V` | `cursorPageDownSelect` | `editorTextFocus && emacsMark` |
+| `Alt+V` | `cursorPageUpSelect` | `editorTextFocus && emacsMark` |
+| `Ctrl+G` | `runCommands` | `textInputFocus && emacsMark` |
+| `escape` | `runCommands` | `textInputFocus && emacsMark` |
 <!-- END: generated keybindings table -->
