@@ -17,6 +17,8 @@ fi
 # Install plugins from plugins.txt
 echo "Installing Claude Code plugins..."
 while IFS= read -r plugin; do
+    plugin="${plugin%%#*}"            # drop comments (commented lines = optional plugins)
+    plugin="${plugin//[[:space:]]/}"
     [ -z "$plugin" ] && continue
     echo "  installing $plugin"
     claude plugin install "$plugin" || true

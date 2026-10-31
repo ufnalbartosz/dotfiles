@@ -9,3 +9,7 @@ superpowers@claude-plugins-official
 claude-api@anthropic-agent-skills
 claude-code-setup@claude-plugins-official
 exa@claude-plugins-official
+
+# Optional (not installed by setup). Uncomment after registering the marketplace:
+#   claude plugin marketplace add google/elephant-goldfish-model
+# egm@egm

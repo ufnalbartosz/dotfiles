@@ -34,6 +34,14 @@ Installed from `claude/plugins.txt` via `claude plugin install <id>@<marketplace
 | `claude-api` | `anthropic-agent-skills` | mcp-builder skill + Anthropic SDK helpers |
 | `claude-code-setup` | `claude-plugins-official` | Automation recommender for Claude Code setup |
 
+**Optional** (commented out in `plugins.txt`, so setup skips them):
+
+| Plugin | Marketplace | Purpose |
+|--------|-------------|---------|
+| `egm` | `egm` ([google/elephant-goldfish-model](https://github.com/google/elephant-goldfish-model)) | Spec-first design review: a full-context "elephant" agent drafts a spec, fresh-context "goldfish" subagents review it for unstated assumptions. For design-heavy features, not small fixes. Overlaps with `superpowers` / `feature-dev` planning |
+
+To install it: `claude plugin marketplace add google/elephant-goldfish-model && claude plugin install egm@egm`, then start a new session.
+
 ### Anthropic Skills marketplace (`claude-api` plugin)
 
 The `claude-api` plugin comes from a non-default marketplace. The `extraKnownMarketplaces` entry in `settings.json` is what registers it:
