@@ -4,6 +4,13 @@
 # Always exits 0 so a notification problem never disturbs the session.
 
 input=$(cat)
+
+# Inside cmux, its injected Claude hooks already raise a native notification, pane
+# ring and sidebar badge. Skip the osascript banner so each event pings once.
+# (Set automation.claudeCodeIntegration=false in cmux.json to bring this back.)
+if [ -n "${CMUX_SURFACE_ID:-}" ]; then
+  exit 0
+fi
 msg=$(jq -r '.message // empty' <<<"$input" 2>/dev/null)
 cwd=$(jq -r '.cwd // empty' <<<"$input" 2>/dev/null)
 
