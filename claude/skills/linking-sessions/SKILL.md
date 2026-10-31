@@ -5,11 +5,13 @@ description: Use when the user says to talk to, ask, check on, hand work to, or 
 
 # Linking Sessions
 
+Part of cmux session management, with `rename-sessions` (naming this session's workspace).
+
 Sessions talk through `cmux agent message`. Delivery is automatic; what this skill adds is resolving the target, writing a brief the other side can act on, and not blocking while waiting.
 
 ## Sending
 
-**REQUIRED SUB-SKILL:** Use rename-cmux on this session first, so the sender name in the message is meaningful.
+**REQUIRED SUB-SKILL:** Use rename-sessions on this session first, so the sender name in the message is meaningful.
 
 1. **Resolve.** `cmux workspace list --id-format both`. Match the user's words to titles case-insensitively. More than one plausible match: ask which. A `workspace_id=<uuid>` is the target as given.
 2. **Check it can receive.** `cmux sidebar-state --workspace <target>` must show a `claude_code=` status line; without one there is no agent (plain shell). `Idle` means it wakes on the message; anything else means it is busy and will see it at its next step. `cmux read-screen --workspace <target> --lines 40` shows what it is doing.

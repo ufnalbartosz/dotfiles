@@ -1,11 +1,13 @@
 ---
-name: rename-cmux
-description: Use when working inside a cmux workspace whose title is generic ("~"), a sentence, or no longer matches what this session is mainly doing, and when asked to rename or name a session.
+name: rename-sessions
+description: Use when working inside a cmux workspace whose title is generic ("~"), a sentence, or no longer matches what this session is mainly doing, and when asked to rename or name a session. Renames only the current session's workspace.
 ---
 
-# Rename cmux Session
+# Rename Session
 
-Invoked as `/rename-cmux`, optionally with a name (`/rename-cmux dotfiles-memory-audit`). A given name is used as-is after converting it to the format below; without one, pick it from the Decide steps.
+Part of cmux session management, with `linking-sessions` (messaging other sessions, which needs a meaningful name from this skill first).
+
+Invoked as `/rename-sessions`, optionally with a name (`/rename-sessions dotfiles-memory-audit`). A given name is used as-is after converting it to the format below; without one, pick it from the Decide steps.
 
 The cmux workspace title is how the user finds this session later, and how other sessions address it. It should name the topic, not describe the work.
 
@@ -26,7 +28,7 @@ The cmux workspace title is how the user finds this session later, and how other
 cmux workspace rename --workspace "$CMUX_WORKSPACE_ID" --title "dotfiles-memory-audit"
 ```
 
-Rename only the workspace you are running in. To get another session renamed, ask it to apply rename-cmux.
+Rename only the workspace you are running in. To get another session renamed, ask it to apply rename-sessions.
 
 ## Claude's own session name
 
