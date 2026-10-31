@@ -30,7 +30,7 @@
       }
     }
   },
-  "language": "English (US)",
+  "language": "English",
   "effortLevel": "high",
   "modelSettings": {
     "claude-opus-5-5": {
@@ -43,6 +43,10 @@
   "tui": "fullscreen",
   "skipWorkflowUsageWarning": true,
   "agentPushNotifEnabled": true,
+  "voice": {
+    "enabled": true,
+    "mode": "hold"
+  },
   "voiceEnabled": true,
   "enableLsp": true,
   "hooks": {
