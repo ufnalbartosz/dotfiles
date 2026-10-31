@@ -1,0 +1,14 @@
+{
+  "$schema": "https://raw.githubusercontent.com/manaflow-ai/cmux/main/web/data/cmux.schema.json",
+  "schemaVersion": 1
+
+  // File-managed cmux settings. Anything not set here falls back to the value
+  // saved in cmux's Settings UI. Full key list: `cmux docs settings`.
+  // Validate with `cmux config doctor`; apply with `cmux reload-config`.
+  // Agent hooks (Codex, Cursor, ...) are NOT stored here: run `cmux hooks setup`.
+
+  // Example overrides (add a comma after schemaVersion, then uncomment):
+  //   "app": { "appearance": "dark", "confirmQuit": "always" },
+  //   "notifications": { "sound": "default", "dockBadge": true },
+  //   "sidebar": { "showPullRequests": true, "watchGitStatus": true }
+}

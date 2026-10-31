@@ -20,3 +20,4 @@ brew "pyright"     # Python type checker (used by Claude Code LSP plugin)
 # Apps
 cask "cursor"      # Cursor IDE
 cask "iterm2"      # Terminal with semantic history
+cask "cmux"        # Ghostty-based terminal with agent status, notifications, session resume

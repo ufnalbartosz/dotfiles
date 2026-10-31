@@ -19,6 +19,7 @@ JSONC_FILES = (
     "cursor/keybindings.json",
     "cursor/mcp.json",
     "claude/settings.json",
+    "cmux/cmux.json",
 )
 
 failures = []

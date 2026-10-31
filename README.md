@@ -20,6 +20,7 @@ Personal config files for Cursor, Claude Code, and dev tooling docs.
 | `cursor/mcp.json` | Merged → `~/.cursor/mcp.json` by `scripts/merge-cursor-mcp.py` (not symlinked — GitLens rewrites the file; the merge restores dropped servers) |
 | `vim/vimrc` | Symlinked → `~/.vimrc` — Emacs-style keys in insert/command mode |
 | `tmux/tmux.conf` | Symlinked → `~/.tmux.conf` — Emacs `mode-keys`/`status-keys`, `C-b r` reloads |
+| `cmux/cmux.json` | Symlinked → `~/.config/cmux/cmux.json` — cmux terminal settings (JSONC; unset keys fall back to the in-app Settings). Agent hooks are installed separately with `cmux hooks setup` |
 | `worktrunk/config.toml` | Symlinked → `~/.config/worktrunk/config.toml` — worktree hooks (CLAUDE.md copy, shared `.venv`, direnv `.envrc`) |
 | `bin/update-workspace.py` | Symlinked → `~/.local/bin/update-workspace.py` — refreshes the multi-root `.code-workspace`; reads `~/.config/dotfiles/workspace.conf` |
 | `claude/settings.json` | Copied once → `~/.claude/settings.json` (sanitized template, no secrets) |
@@ -39,7 +40,7 @@ cd ~/dotfiles && bash scripts/setup.sh
 ```
 
 `scripts/setup.sh`:
-- Installs missing Homebrew packages from the core manifest (git, gh, git-delta, ripgrep, fzf, bat, worktrunk, direnv, node, uv, pyright, Cursor, iTerm2)
+- Installs missing Homebrew packages from the core manifest (git, gh, git-delta, ripgrep, fzf, bat, worktrunk, direnv, node, uv, pyright, Cursor, iTerm2, cmux)
 - Skips installs when the expected binary or app already exists, even if it was not installed by Homebrew
 - With `--with-extras`, also installs missing optional packages from `Brewfile.extras` (currently `snyk-cli`)
 - Adds the repo-managed Git config include for delta-powered diffs
@@ -55,6 +56,7 @@ cd ~/dotfiles && bash scripts/setup.sh
 - Prints how to set `~/.config/dotfiles/workspace.conf` if the workspace updater isn't pointed at a `.code-workspace` yet
 
 After running:
+0. Optional, if you use cmux: `cmux hooks setup` to install status/notification hooks for the other agents (Codex, Cursor, Amp, ...). It writes into each agent's own config, so it is not tracked here
 1. Authenticate GitHub CLI: `gh auth login` (once per machine)
 2. Get your token: `gh auth token`
 3. Paste it into `~/.cursor/mcp.json` → `GITHUB_PERSONAL_ACCESS_TOKEN`

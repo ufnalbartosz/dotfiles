@@ -105,6 +105,7 @@ if command -v brew &>/dev/null; then
     install_brew_formula_if_missing pyright pyright
     install_brew_cask_if_missing cursor "/Applications/Cursor.app" cursor
     install_brew_cask_if_missing iterm2 "/Applications/iTerm.app"
+    install_brew_cask_if_missing cmux "/Applications/cmux.app" cmux
 
     if [ "$WITH_EXTRAS" = true ]; then
         echo "Installing optional Homebrew packages..."
@@ -214,6 +215,9 @@ link_file "$DOTFILES/bin/update-workspace.py" "$HOME/.local/bin/update-workspace
 # Editor/multiplexer configs (Emacs-style keys in both)
 link_file "$DOTFILES/vim/vimrc" "$HOME/.vimrc" "vimrc"
 link_file "$DOTFILES/tmux/tmux.conf" "$HOME/.tmux.conf" "tmux.conf"
+
+# cmux terminal config (JSONC; settings not listed fall back to the in-app Settings)
+link_file "$DOTFILES/cmux/cmux.json" "$HOME/.config/cmux/cmux.json" "cmux.json"
 
 # The workspace updater targets a machine-local .code-workspace. Point it at one
 # via a single-line file (untracked — it holds a machine-specific path).
