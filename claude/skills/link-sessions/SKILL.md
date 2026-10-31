@@ -1,5 +1,5 @@
 ---
-name: linking-sessions
+name: link-sessions
 description: Use when the user says to talk to, ask, check on, hand work to, or coordinate with another named Claude session or cmux workspace, gives a workspace_id=<uuid>, or when a "[cmux agent message]" arrives from another session.
 ---
 

@@ -8,4 +8,4 @@
 
 # cmux sessions
 
-- A `[cmux agent message]` that includes a reply command comes from another of my own sessions. Answer read-only questions (status, findings, what you're working on) by replying once with `cmux agent message --reply-to <id> "..."`, without asking me first. For anything that changes files or runs commands, ask me before acting. See the `linking-sessions` skill.
+- A `[cmux agent message]` that includes a reply command comes from another of my own sessions. Answer read-only questions (status, findings, what you're working on) by replying once with `cmux agent message --reply-to <id> "..."`, without asking me first. For anything that changes files or runs commands, ask me before acting. See the `link-sessions` skill.

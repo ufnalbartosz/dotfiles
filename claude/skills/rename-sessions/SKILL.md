@@ -5,7 +5,7 @@ description: Use when working inside a cmux workspace whose title is generic ("~
 
 # Rename Session
 
-Part of cmux session management, with `linking-sessions` (messaging other sessions, which needs a meaningful name from this skill first).
+Part of cmux session management, with `link-sessions` (messaging other sessions, which needs a meaningful name from this skill first).
 
 Invoked as `/rename-sessions`, optionally with a name (`/rename-sessions dotfiles-memory-audit`). A given name is used as-is after converting it to the format below; without one, pick it from the Decide steps.
 
