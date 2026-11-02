@@ -253,6 +253,19 @@ Open Cursor and check:
 | `Cmd+J` | `workbench.action.togglePanel` | — |
 | `Cmd+J` | `-workbench.action.chat.toggleAgentMode` | — |
 | `escape` | `workbench.action.chat.stopInChatSession` | `inChat` |
+| `Ctrl+X Ctrl+F` | `workbench.action.quickOpen` | — |
+| `Ctrl+X B` | `workbench.action.showAllEditorsByMostRecentlyUsed` | — |
+| `Ctrl+X K` | `workbench.action.closeActiveEditor` | `!terminalFocus` |
+| `Ctrl+X 0` | `workbench.action.closeEditorsInGroup` | `!terminalFocus && !auxiliaryBarFocus` |
+| `Ctrl+X 0` | `workbench.action.closeAuxiliaryBar` | `!terminalFocus && auxiliaryBarFocus` |
+| `Ctrl+X 1` | `workbench.action.closeEditorsInOtherGroups` | `!terminalFocus` |
+| `Ctrl+X 2` | `workbench.action.splitEditorDown` | `!terminalFocus` |
+| `Ctrl+X 3` | `workbench.action.splitEditorRight` | `!terminalFocus` |
+| `Ctrl+X 4` | `workbench.action.toggleEditorGroupLayout` | `!terminalFocus` |
+| `Ctrl+X left` | `workbench.action.previousEditor` | `editorTextFocus` |
+| `Ctrl+X right` | `workbench.action.nextEditor` | `editorTextFocus` |
+| `Ctrl+X Ctrl+W` | `workbench.action.files.saveAs` | `!terminalFocus` |
+| `` Ctrl+X ` `` | `editor.action.marker.next` | `editorTextFocus` |
 | `Ctrl+A` | `cursorHome` | `editorTextFocus` |
 | `Ctrl+E` | `cursorEnd` | `editorTextFocus` |
 | `Ctrl+F` | `cursorRight` | `editorTextFocus` |

@@ -35,7 +35,9 @@
         "workbench.action.focusActiveEditorGroup",
         "gitlens.showGraphView",
         "workbench.view.explorer",
-        "workbench.action.findInFiles"
+        "workbench.action.findInFiles",
+        "workbench.action.quickOpen",
+        "workbench.action.showAllEditorsByMostRecentlyUsed"
     ],
 
     // Python
