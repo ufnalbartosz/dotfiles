@@ -48,6 +48,9 @@
     "testing.openTesting":                  "neverOpen",
     "testing.automaticallyOpenTestResults": "neverOpen",
 
+    // Cursor agent: a message sent while the agent works steers the current run
+    "cursor.composer.queueMessageDefaultBehavior": "steer",
+
     // Claude Code
     "claudeCode.preferredLocation":     "panel",
     "claudeCode.selectedModel":         "default",
