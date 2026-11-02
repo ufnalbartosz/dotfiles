@@ -356,6 +356,20 @@ Open Cursor and check:
 | `Alt+Shift+.` | `cursorBottomSelect` | `editorTextFocus && emacsMark` |
 | `Ctrl+V` | `cursorPageDownSelect` | `editorTextFocus && emacsMark` |
 | `Alt+V` | `cursorPageUpSelect` | `editorTextFocus && emacsMark` |
+| `up` | `cursorUpSelect` | `editorTextFocus && emacsMark && !suggestWidgetVisible` |
+| `down` | `cursorDownSelect` | `editorTextFocus && emacsMark && !suggestWidgetVisible` |
+| `left` | `cursorLeftSelect` | `editorTextFocus && emacsMark` |
+| `right` | `cursorRightSelect` | `editorTextFocus && emacsMark` |
+| `Alt+left` | `cursorWordLeftSelect` | `editorTextFocus && emacsMark` |
+| `Alt+right` | `cursorWordEndRightSelect` | `editorTextFocus && emacsMark` |
+| `Cmd+left` | `cursorHomeSelect` | `editorTextFocus && emacsMark` |
+| `Cmd+right` | `cursorEndSelect` | `editorTextFocus && emacsMark` |
+| `Cmd+up` | `cursorTopSelect` | `editorTextFocus && emacsMark` |
+| `Cmd+down` | `cursorBottomSelect` | `editorTextFocus && emacsMark` |
+| `home` | `cursorHomeSelect` | `editorTextFocus && emacsMark` |
+| `end` | `cursorEndSelect` | `editorTextFocus && emacsMark` |
+| `pageup` | `cursorPageUpSelect` | `editorTextFocus && emacsMark && !suggestWidgetVisible` |
+| `pagedown` | `cursorPageDownSelect` | `editorTextFocus && emacsMark && !suggestWidgetVisible` |
 | `Ctrl+G` | `runCommands` | `textInputFocus && emacsMark` |
 | `escape` | `runCommands` | `textInputFocus && emacsMark` |
 <!-- END: generated keybindings table -->

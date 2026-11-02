@@ -259,6 +259,22 @@
     { "key": "alt+shift+.", "command": "cursorBottomSelect", "when": "editorTextFocus && emacsMark" },
     { "key": "ctrl+v", "command": "cursorPageDownSelect", "when": "editorTextFocus && emacsMark" },
     { "key": "alt+v", "command": "cursorPageUpSelect", "when": "editorTextFocus && emacsMark" },
+    // Arrow and macOS movement keys extend the selection too, like their Shift variants.
+    // Up/Down/PageUp/PageDown stand aside while the suggestion list is open, so they still move through it.
+    { "key": "up", "command": "cursorUpSelect", "when": "editorTextFocus && emacsMark && !suggestWidgetVisible" },
+    { "key": "down", "command": "cursorDownSelect", "when": "editorTextFocus && emacsMark && !suggestWidgetVisible" },
+    { "key": "left", "command": "cursorLeftSelect", "when": "editorTextFocus && emacsMark" },
+    { "key": "right", "command": "cursorRightSelect", "when": "editorTextFocus && emacsMark" },
+    { "key": "alt+left", "command": "cursorWordLeftSelect", "when": "editorTextFocus && emacsMark" },
+    { "key": "alt+right", "command": "cursorWordEndRightSelect", "when": "editorTextFocus && emacsMark" },
+    { "key": "cmd+left", "command": "cursorHomeSelect", "when": "editorTextFocus && emacsMark" },
+    { "key": "cmd+right", "command": "cursorEndSelect", "when": "editorTextFocus && emacsMark" },
+    { "key": "cmd+up", "command": "cursorTopSelect", "when": "editorTextFocus && emacsMark" },
+    { "key": "cmd+down", "command": "cursorBottomSelect", "when": "editorTextFocus && emacsMark" },
+    { "key": "home", "command": "cursorHomeSelect", "when": "editorTextFocus && emacsMark" },
+    { "key": "end", "command": "cursorEndSelect", "when": "editorTextFocus && emacsMark" },
+    { "key": "pageup", "command": "cursorPageUpSelect", "when": "editorTextFocus && emacsMark && !suggestWidgetVisible" },
+    { "key": "pagedown", "command": "cursorPageDownSelect", "when": "editorTextFocus && emacsMark && !suggestWidgetVisible" },
     { "key": "ctrl+g", "command": "runCommands", "args": { "commands": ["cancelSelection", { "command": "_setContext", "args": ["emacsMark", false] }] }, "when": "textInputFocus && emacsMark" },
     { "key": "escape", "command": "runCommands", "args": { "commands": ["cancelSelection", { "command": "_setContext", "args": ["emacsMark", false] }] }, "when": "textInputFocus && emacsMark" }
 ]
