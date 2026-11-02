@@ -21,6 +21,8 @@ Personal config files for Cursor, Claude Code, and dev tooling docs.
 | `vim/vimrc` | Symlinked → `~/.vimrc` — Emacs-style keys in insert/command mode |
 | `tmux/tmux.conf` | Symlinked → `~/.tmux.conf` — Emacs `mode-keys`/`status-keys`, `C-b r` reloads |
 | `cmux/cmux.json` | Symlinked → `~/.config/cmux/cmux.json` — cmux terminal settings (JSONC; unset keys fall back to the in-app Settings). Agent hooks are installed separately with `cmux hooks setup` |
+| `cmux/automations.json` | Symlinked → `~/.cmuxterm/automations.json` — cmux automation rules that run `cmux-sleep-sync` on agent/status events (see [Auto no-sleep in cmux](#auto-no-sleep-in-cmux)) |
+| `bin/cmux-sleep-sync` | Symlinked → `~/.local/bin/cmux-sleep-sync` — disables sleep while any cmux agent is running, restores it when none is |
 | `worktrunk/config.toml` | Symlinked → `~/.config/worktrunk/config.toml` — worktree hooks (CLAUDE.md copy, shared `.venv`, direnv `.envrc`) |
 | `bin/update-workspace.py` | Symlinked → `~/.local/bin/update-workspace.py` — refreshes the multi-root `.code-workspace`; reads `~/.config/dotfiles/workspace.conf` |
 | `claude/settings.json` | Copied once → `~/.claude/settings.json` (sanitized template, no secrets) |
@@ -160,6 +162,31 @@ To undo: `sudo rm /etc/sudoers.d/pmset-nosleep`.
 - The rule grants `NOPASSWD` for two literal command lines only —
   `/usr/bin/pmset -b disablesleep 1` and `... 0`. No wildcards, so anything else
   (`pmset -a disablesleep 1`, a bare `sudo pmset`) still requires a password.
+
+### Auto no-sleep in cmux
+
+Plain Claude sessions in cmux panes don't need `ccs` to survive a closed lid:
+`pmset disablesleep` is system-wide, so all that matters is that it's on while an
+agent works. `cmux/automations.json` makes cmux do that by itself. On
+`program_status.changed`, `agent.hook.UserPromptSubmit` / `Stop` / `SessionEnd`, and
+`*.closed` events it runs `cmux-sleep-sync`, which:
+
+- asks `cmux workspace status --json` for every workspace in every window and counts
+  those with `signals.any_agent_running` (the sidebar's "Running");
+- any running → `sudo -n pmset -b disablesleep 1`, and records that it did so in
+  `~/.local/state/cmux-sleep-sync/owned`;
+- none running → re-enables sleep, **but only if it was the one that disabled it** and no
+  `ccs` tmux session is alive. A manual `sleep-disabled` or a `ccs` run is never undone.
+
+It needs the passwordless sudoers rule above (`sudo -n` never prompts; without the rule
+every run just logs a failure). Activity goes to `~/Library/Logs/cmux-sleep-sync.log`;
+`cmux automation logs` shows the rule firings. `cmux-sleep-sync --dry-run` prints what
+it would do. To turn it off: `cmux automation disable sleep-sync-status` (and the other
+`sleep-sync-*` rules), or remove the symlink and `cmux automation reload`.
+
+Limits: cmux reports "needs input" as a separate signal from "running", so an agent stuck
+on a permission prompt probably doesn't keep the Mac awake (untested). If cmux quits or crashes while an agent is running, no event
+fires, so sleep stays disabled. Run `sleep-enabled` in that case.
 
 ## Worktree workflow
 

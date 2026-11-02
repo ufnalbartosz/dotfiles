@@ -219,6 +219,11 @@ link_file "$DOTFILES/tmux/tmux.conf" "$HOME/.tmux.conf" "tmux.conf"
 # cmux terminal config (JSONC; settings not listed fall back to the in-app Settings)
 link_file "$DOTFILES/cmux/cmux.json" "$HOME/.config/cmux/cmux.json" "cmux.json"
 
+# cmux automations: keep the Mac awake while any cmux agent is running.
+# The rules call cmux-sleep-sync, which needs the --with-sudoers rule to toggle.
+link_file "$DOTFILES/bin/cmux-sleep-sync" "$HOME/.local/bin/cmux-sleep-sync" "cmux-sleep-sync"
+link_file "$DOTFILES/cmux/automations.json" "$HOME/.cmuxterm/automations.json" "cmux automations.json"
+
 # The workspace updater targets a machine-local .code-workspace. Point it at one
 # via a single-line file (untracked — it holds a machine-specific path).
 WORKSPACE_CONF="$HOME/.config/dotfiles/workspace.conf"

@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "id": "sleep-sync-status",
+      "when": { "event": "program_status.changed" },
+      "rate_limit": { "interval_seconds": 5, "maximum": 5 },
+      "then": [{ "action": "run", "command": "\"$HOME/.local/bin/cmux-sleep-sync\"" }]
+    },
+    {
+      "id": "sleep-sync-prompt",
+      "when": { "event": "agent.hook.UserPromptSubmit" },
+      "rate_limit": { "interval_seconds": 5, "maximum": 5 },
+      "then": [{ "action": "run", "command": "\"$HOME/.local/bin/cmux-sleep-sync\"" }]
+    },
+    {
+      "id": "sleep-sync-stop",
+      "when": { "event": "agent.hook.Stop" },
+      "rate_limit": { "interval_seconds": 5, "maximum": 5 },
+      "then": [{ "action": "run", "command": "\"$HOME/.local/bin/cmux-sleep-sync\"" }]
+    },
+    {
+      "id": "sleep-sync-session-end",
+      "when": { "event": "agent.hook.SessionEnd" },
+      "rate_limit": { "interval_seconds": 5, "maximum": 5 },
+      "then": [{ "action": "run", "command": "\"$HOME/.local/bin/cmux-sleep-sync\"" }]
+    },
+    {
+      "id": "sleep-sync-closed",
+      "when": { "event": "*.closed" },
+      "rate_limit": { "interval_seconds": 5, "maximum": 5 },
+      "then": [{ "action": "run", "command": "\"$HOME/.local/bin/cmux-sleep-sync\"" }]
+    }
+  ]
+}

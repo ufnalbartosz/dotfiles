@@ -1,0 +1,109 @@
+#!/usr/bin/env bash
+# Keep the Mac awake (lid closed included) while any cmux agent is running.
+#
+# Fired by the cmux automation rule in cmux/automations.json on agent and
+# program-status events. Asks cmux whether any workspace in any window has
+# `any_agent_running`, then sets `pmset disablesleep` to match.
+#
+# Ownership: this script only re-enables sleep that it disabled itself
+# (tracked by a marker file). A manual `sleep-disabled` or a running `ccs`
+# session is never undone here.
+#
+# Needs the passwordless sudoers rule for `pmset -b disablesleep 0|1`
+# (see README). Without it, the pmset call fails and the failure is logged.
+#
+# Usage: cmux-sleep-sync [--dry-run]
+
+set -euo pipefail
+
+CMUX="${CMUX_BUNDLED_CLI_PATH:-/Applications/cmux.app/Contents/Resources/bin/cmux}"
+JQ=/usr/bin/jq
+PMSET=/usr/bin/pmset
+STATE_DIR="$HOME/.local/state/cmux-sleep-sync"
+MARKER="$STATE_DIR/owned"
+LOCK="$STATE_DIR/lock"
+LOG="$HOME/Library/Logs/cmux-sleep-sync.log"
+# Status signals can lag the event that fired this run by a moment.
+SETTLE_SECONDS="${CMUX_SLEEP_SYNC_SETTLE:-2}"
+
+dry_run=0
+[[ "${1:-}" == "--dry-run" ]] && dry_run=1
+
+mkdir -p "$STATE_DIR" "$(dirname "$LOG")"
+
+log() {
+  printf '%s %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$*" >>"$LOG"
+}
+
+# One run at a time; a lock older than 2 minutes is from a killed run.
+if ! mkdir "$LOCK" 2>/dev/null; then
+  if [[ -n "$(find "$LOCK" -maxdepth 0 -mmin +2 2>/dev/null)" ]]; then
+    rmdir "$LOCK" 2>/dev/null || true
+    mkdir "$LOCK" 2>/dev/null || exit 0
+  else
+    exit 0
+  fi
+fi
+trap 'rmdir "$LOCK" 2>/dev/null || true' EXIT
+
+(( dry_run )) || sleep "$SETTLE_SECONDS"
+
+# Count workspaces, across all windows, that have an agent running.
+running=0
+while IFS= read -r window; do
+  [[ -n "$window" ]] || continue
+  while IFS= read -r ws; do
+    [[ -n "$ws" ]] || continue
+    if [[ "$("$CMUX" workspace status --window "$window" --workspace "$ws" --json 2>/dev/null |
+      "$JQ" -r '.signals.any_agent_running // false')" == "true" ]]; then
+      running=$((running + 1))
+    fi
+  done < <("$CMUX" workspace list --window "$window" --json 2>/dev/null | "$JQ" -r '.workspaces[].id')
+done < <("$CMUX" list-windows --json 2>/dev/null | "$JQ" -r '.[].id')
+
+current="$("$PMSET" -g | awk '/SleepDisabled/ {print $2}')"
+current="${current:-0}"
+
+# True when a tmux session started by `ccs` (tagged @ccs=1) is still alive.
+ccs_sessions_live() {
+  local tmux_bin
+  tmux_bin="$(command -v tmux || echo /opt/homebrew/bin/tmux)"
+  [[ -x "$tmux_bin" ]] || return 1
+  "$tmux_bin" list-sessions -F '#{@ccs}' 2>/dev/null | grep -qx 1
+}
+
+set_sleep_disabled() {
+  local value="$1"
+  if (( dry_run )); then
+    echo "dry-run: would run sudo -n $PMSET -b disablesleep $value"
+    return 0
+  fi
+  if sudo -n "$PMSET" -b disablesleep "$value" 2>>"$LOG"; then
+    return 0
+  fi
+  log "pmset disablesleep $value failed (is the sudoers rule installed?)"
+  return 1
+}
+
+if (( running > 0 )); then
+  if [[ "$current" != "1" ]]; then
+    if set_sleep_disabled 1; then
+      (( dry_run )) || { touch "$MARKER"; log "disabled sleep ($running workspace(s) running)"; }
+    fi
+  fi
+elif [[ -e "$MARKER" ]]; then
+  if ccs_sessions_live; then
+    # A ccs tmux session still wants the Mac awake; ccs restores sleep itself.
+    (( dry_run )) || { rm -f "$MARKER"; log "left sleep disabled for running ccs session(s)"; }
+  elif [[ "$current" == "1" ]]; then
+    if set_sleep_disabled 0; then
+      (( dry_run )) || { rm -f "$MARKER"; log "enabled sleep (no agents running)"; }
+    fi
+  else
+    # Someone else already re-enabled sleep; drop our claim.
+    (( dry_run )) || rm -f "$MARKER"
+  fi
+fi
+
+(( dry_run )) && echo "running=$running SleepDisabled=$current owned=$([[ -e "$MARKER" ]] && echo yes || echo no)"
+exit 0
