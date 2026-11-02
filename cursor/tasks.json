@@ -1,0 +1,26 @@
+// Cursor user tasks. scripts/setup.sh symlinks this to ~/Library/Application Support/Cursor/User/tasks.json.
+{
+    "version": "2.0.0",
+    "tasks": [
+        // JSON string helper (cursor/jsonstr.js). In .json and .jsonc files Alt+Cmd+J and
+        // Alt+Shift+Cmd+J save the file, then run these tasks (cursor/keybindings.json).
+        {
+            "label": "Unstringify JSON",
+            "detail": "Replace the \"key\": \"<stringified JSON>\" value on the cursor line with pretty JSON",
+            "type": "process",
+            "command": "node",
+            "args": ["${userHome}/dotfiles/cursor/jsonstr.js", "unstringify", "${file}", "${lineNumber}"],
+            "problemMatcher": [],
+            "presentation": { "reveal": "silent", "echo": false, "showReuseMessage": false, "clear": true }
+        },
+        {
+            "label": "Restringify JSON",
+            "detail": "Turn the unstringified block at the cursor back into a JSON string",
+            "type": "process",
+            "command": "node",
+            "args": ["${userHome}/dotfiles/cursor/jsonstr.js", "restringify", "${file}", "${lineNumber}"],
+            "problemMatcher": [],
+            "presentation": { "reveal": "silent", "echo": false, "showReuseMessage": false, "clear": true }
+        }
+    ]
+}

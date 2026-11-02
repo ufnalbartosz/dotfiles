@@ -170,6 +170,10 @@
         "command": "workbench.action.chat.stopInChatSession",
         "when": "inChat"
     },
+    // JSON string helper (cursor/jsonstr.js, run by the tasks in cursor/tasks.json).
+    // Each key saves first, because the script edits the file on disk.
+    { "key": "alt+cmd+j", "command": "runCommands", "args": { "commands": ["workbench.action.files.save", { "command": "workbench.action.tasks.runTask", "args": "Unstringify JSON" }] }, "when": "editorTextFocus && (resourceExtname == .json || resourceExtname == .jsonc)" },
+    { "key": "alt+shift+cmd+j", "command": "runCommands", "args": { "commands": ["workbench.action.files.save", { "command": "workbench.action.tasks.runTask", "args": "Restringify JSON" }] }, "when": "editorTextFocus && (resourceExtname == .json || resourceExtname == .jsonc)" },
     // --- Emacs C-x window and buffer keys (emacs-mcx gave these before) ---
     // C-x C-f and C-x b also work from the terminal: their commands are in commandsToSkipShell.
     { "key": "ctrl+x ctrl+f", "command": "workbench.action.quickOpen" },

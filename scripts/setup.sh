@@ -185,7 +185,7 @@ fi
 # Create Cursor user dir if it doesn't exist (fresh machine)
 mkdir -p "$CURSOR_DIR"
 
-for file in keybindings.json settings.json; do
+for file in keybindings.json settings.json tasks.json; do
     link_file "$DOTFILES/cursor/$file" "$CURSOR_DIR/$file" "$file"
 done
 

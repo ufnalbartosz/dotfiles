@@ -16,6 +16,8 @@ Personal config files for Cursor, Claude Code, and dev tooling docs.
 | `scripts/ohmyzsh-setup.sh` | Run by `scripts/setup.sh` — clones zsh-autosuggestions / zsh-syntax-highlighting and sets the `plugins=(...)` list when `~/.zshrc` still has the stock `plugins=(git)` |
 | `templates/sudoers-pmset-nosleep` | Installed → `/etc/sudoers.d/pmset-nosleep` by `scripts/setup.sh --with-sudoers` |
 | `cursor/keybindings.json` | Symlinked → `~/Library/Application Support/Cursor/User/keybindings.json` |
+| `cursor/tasks.json` | Symlinked → `~/Library/Application Support/Cursor/User/tasks.json` — the "Unstringify JSON" / "Restringify JSON" tasks (see [Cursor tasks](#cursor-tasks)) |
+| `cursor/jsonstr.js` | Run by those tasks — edits a stringified-JSON value as real JSON, then turns it back into a string |
 | `cursor/settings.json` | Symlinked → `~/Library/Application Support/Cursor/User/settings.json` |
 | `cursor/mcp.json` | Merged → `~/.cursor/mcp.json` by `scripts/merge-cursor-mcp.py` (not symlinked — GitLens rewrites the file; the merge restores dropped servers) |
 | `vim/vimrc` | Symlinked → `~/.vimrc` — Emacs-style keys in insert/command mode |
@@ -203,6 +205,17 @@ Machine- or org-specific editor settings (a GitHub Enterprise URI, proxies, …)
 
 Because the hooks drop `CLAUDE.md` and `.envrc` into each worktree as untracked files, add both to your global gitignore (`core.excludesfile`, e.g. `~/.gitignore_global`) — otherwise `wt remove` treats them as uncommitted changes and refuses to clean up. (Trade-off: in a repo that doesn't yet track its `CLAUDE.md`, you'll need `git add -f CLAUDE.md` to start.)
 
+## Cursor tasks
+
+`cursor/tasks.json` is symlinked to `User/tasks.json`. Its two tasks run `cursor/jsonstr.js` (they expect the repo at `~/dotfiles`):
+
+- **Unstringify JSON** (Alt+Cmd+J in `.json` / `.jsonc` files): on the cursor line, finds `"key": "<stringified JSON object or array>"` and replaces the string with pretty JSON.
+  A warning comment goes above the value. It also makes a `.json` file invalid until you restringify, so the edited file cannot be used by mistake.
+- **Restringify JSON** (Alt+Shift+Cmd+J): with the cursor anywhere in that block, turns it back into a one-line string and removes the comment.
+  Tokens are copied as written, so numbers and escapes do not change. The string gets back its original layout (compact, or indented with 2 spaces, 4 spaces or tabs).
+
+Both keys save the file first, because the script edits the file on disk. Errors (no stringified value on the line, invalid JSON after an edit) show in the task terminal. When an error occurs, the file stays unchanged.
+
 ## Verify keybindings
 
 Open Cursor and check:
@@ -253,6 +266,8 @@ Open Cursor and check:
 | `Cmd+J` | `workbench.action.togglePanel` | — |
 | `Cmd+J` | `-workbench.action.chat.toggleAgentMode` | — |
 | `escape` | `workbench.action.chat.stopInChatSession` | `inChat` |
+| `Alt+Cmd+J` | `runCommands` | `editorTextFocus && (resourceExtname == .json \|\| resourceExtname == .jsonc)` |
+| `Alt+Shift+Cmd+J` | `runCommands` | `editorTextFocus && (resourceExtname == .json \|\| resourceExtname == .jsonc)` |
 | `Ctrl+X Ctrl+F` | `workbench.action.quickOpen` | — |
 | `Ctrl+X B` | `workbench.action.showAllEditorsByMostRecentlyUsed` | — |
 | `Ctrl+X K` | `workbench.action.closeActiveEditor` | `!terminalFocus` |
