@@ -23,5 +23,6 @@ Reconcile live machine config with the dotfiles repo so the repo stays the sourc
 - **Never commit secrets.** The checker redacts `env` values in mcp.json; keep template tokens as `<your-token-here>` placeholders.
 - `claude-setup.sh` seeds `~/.claude/settings.json` only when missing — updating the template does NOT update this machine; apply live edits too.
 - **GitLens overwrites `~/.cursor/mcp.json`**, silently dropping template servers. Fix by running `scripts/merge-cursor-mcp.py` (also run by `setup.sh`) — it restores missing servers, keeps live entries and tokens, and fills a placeholder GitHub token from `gh auth token`.
-- Cursor `settings.json`/`keybindings.json` are symlinked so live edits show up as uncommitted repo changes — the repo-clean check catches those.
+- Cursor `keybindings.json`/`tasks.json` are symlinked, so live edits to them show up as uncommitted repo changes, and the repo-clean check catches those.
+- Cursor `settings.json` is generated (`cursor/settings.json` + git-ignored `cursor/settings.local.json`), so edits made in the Settings UI do **not** show up in git. `node cursor/settings-merge.js --dry-run` lists them. Move lasting ones into the shared or local file.
 - If the user disagrees with a direction, that's signal: encode the decision in the ignore lists so it never resurfaces.

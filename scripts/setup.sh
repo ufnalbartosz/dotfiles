@@ -185,9 +185,18 @@ fi
 # Create Cursor user dir if it doesn't exist (fresh machine)
 mkdir -p "$CURSOR_DIR"
 
-for file in keybindings.json settings.json tasks.json; do
+for file in keybindings.json tasks.json; do
     link_file "$DOTFILES/cursor/$file" "$CURSOR_DIR/$file" "$file"
 done
+
+# settings.json is generated, not symlinked: Cursor cannot include a second
+# settings file, so merge the shared cursor/settings.json with the git-ignored
+# cursor/settings.local.json (private and machine-only keys, which win).
+if command -v node &>/dev/null; then
+    node "$DOTFILES/cursor/settings-merge.js"
+else
+    echo "  settings.json: node not found, not generated (install node, then re-run setup.sh)" >&2
+fi
 
 # Merge template MCP servers into ~/.cursor/mcp.json. Can't be a symlink or a
 # copy-once seed: GitLens rewrites the file and silently drops the template

@@ -1,0 +1,11 @@
+// Template for cursor/settings.local.json: copy it there and keep the keys you need.
+// The local file is git-ignored. scripts/setup.sh (cursor/settings-merge.js) merges it over
+// cursor/settings.json into Cursor's User/settings.json. Keys here win; nested objects merge key by key.
+// Put private and machine-only keys here, never in the shared file.
+{
+    // GitHub Enterprise server for this machine
+    "github-enterprise.uri": "https://github.example.com",
+
+    // Python interpreter for this machine
+    "python.defaultInterpreterPath": "/path/to/python3"
+}

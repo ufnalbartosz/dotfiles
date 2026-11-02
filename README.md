@@ -16,9 +16,10 @@ Personal config files for Cursor, Claude Code, and dev tooling docs.
 | `scripts/ohmyzsh-setup.sh` | Run by `scripts/setup.sh` — clones zsh-autosuggestions / zsh-syntax-highlighting and sets the `plugins=(...)` list when `~/.zshrc` still has the stock `plugins=(git)` |
 | `templates/sudoers-pmset-nosleep` | Installed → `/etc/sudoers.d/pmset-nosleep` by `scripts/setup.sh --with-sudoers` |
 | `cursor/keybindings.json` | Symlinked → `~/Library/Application Support/Cursor/User/keybindings.json` |
-| `cursor/tasks.json` | Symlinked → `~/Library/Application Support/Cursor/User/tasks.json` — the "Unstringify JSON" / "Restringify JSON" tasks (see [Cursor tasks](#cursor-tasks)) |
+| `cursor/tasks.json` | Symlinked → `~/Library/Application Support/Cursor/User/tasks.json` — the "Unstringify JSON" / "Restringify JSON" tasks (see [Cursor settings and tasks](#cursor-settings-and-tasks)) |
 | `cursor/jsonstr.js` | Run by those tasks — edits a stringified-JSON value as real JSON, then turns it back into a string |
-| `cursor/settings.json` | Symlinked → `~/Library/Application Support/Cursor/User/settings.json` |
+| `cursor/settings.json` | Shared settings. Merged with `cursor/settings.local.json` → `~/Library/Application Support/Cursor/User/settings.json` by `cursor/settings-merge.js` (generated, not symlinked) |
+| `cursor/settings.local.example.json` | Template for the git-ignored `cursor/settings.local.json` — private and machine-only keys (GHE URI, Python interpreter path, ...) |
 | `cursor/mcp.json` | Merged → `~/.cursor/mcp.json` by `scripts/merge-cursor-mcp.py` (not symlinked — GitLens rewrites the file; the merge restores dropped servers) |
 | `vim/vimrc` | Symlinked → `~/.vimrc` — Emacs-style keys in insert/command mode |
 | `tmux/tmux.conf` | Symlinked → `~/.tmux.conf` — Emacs `mode-keys`/`status-keys`, `C-b r` reloads |
@@ -51,7 +52,7 @@ cd ~/dotfiles && bash scripts/setup.sh
 - Installs the Oh My Zsh plugin set (when Oh My Zsh is present) and sources the terminal search helpers and Emacs keymap from `~/.zshrc`
 - Installs Claude Code via npm if not already present
 - Links the Codex app-bundled CLI into `~/.local/bin` when needed
-- Backs up existing Cursor config files (as `.bak`) then symlinks them
+- Symlinks Cursor `keybindings.json` and `tasks.json` (backing up existing files as `.bak`), and generates Cursor `settings.json` from `cursor/settings.json` + `cursor/settings.local.json` (see [Cursor settings and tasks](#cursor-settings-and-tasks))
 - Merges template MCP servers into `~/.cursor/mcp.json`, restoring any that GitLens dropped (live entries and tokens are preserved; a placeholder GitHub token is filled from `gh auth token` when available)
 - Seeds `~/.claude/settings.json` from template (skipped if already exists)
 - Installs all Claude Code plugins via `claude plugin install`
@@ -205,7 +206,22 @@ Machine- or org-specific editor settings (a GitHub Enterprise URI, proxies, …)
 
 Because the hooks drop `CLAUDE.md` and `.envrc` into each worktree as untracked files, add both to your global gitignore (`core.excludesfile`, e.g. `~/.gitignore_global`) — otherwise `wt remove` treats them as uncommitted changes and refuses to clean up. (Trade-off: in a repo that doesn't yet track its `CLAUDE.md`, you'll need `git add -f CLAUDE.md` to start.)
 
-## Cursor tasks
+## Cursor settings and tasks
+
+Cursor has no way to include a second settings file, so `User/settings.json` is generated rather than symlinked.
+`scripts/setup.sh` runs `node cursor/settings-merge.js`, which merges two files:
+
+- `cursor/settings.json`: shared, in git.
+- `cursor/settings.local.json`: this machine only, git-ignored, optional. Start from `cursor/settings.local.example.json`.
+  Put private and machine-only keys here, for example `github-enterprise.uri` and `python.defaultInterpreterPath`.
+
+Keys in the local file win. Nested objects (such as `"[json]": {...}`) merge key by key. Arrays and other values are replaced.
+Both files can contain comments and trailing commas.
+
+The generated file is overwritten on each run, so make lasting changes in the two source files.
+If you changed keys in the Cursor Settings UI, the script lists them (live value → merged value) before it writes the file.
+It then saves the old file as `settings.json.bak`. To see that list without writing anything, run `node cursor/settings-merge.js --dry-run`.
+On a machine where `settings.json` is still the old symlink to the repo, the first run replaces the symlink. It never writes through the symlink into the repo.
 
 `cursor/tasks.json` is symlinked to `User/tasks.json`. Its two tasks run `cursor/jsonstr.js` (they expect the repo at `~/dotfiles`):
 
