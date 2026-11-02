@@ -37,12 +37,32 @@ stripped = re.sub(r"^\s*//.*$", "", raw, flags=re.MULTILINE)
 bindings = json.loads(stripped)
 
 MOD_MAP = {
-    "ctrl": "Ctrl", "cmd": "Cmd", "shift": "Shift",
-    "alt": "Alt", "opt": "Opt", "meta": "Meta",
+    "ctrl": "Ctrl",
+    "cmd": "Cmd",
+    "shift": "Shift",
+    "alt": "Alt",
+    "opt": "Opt",
+    "meta": "Meta",
 }
 
 
-def pretty_key(key):
+def code_span(text: str) -> str:
+    """Wrap text in a Markdown code span that is safe inside a table cell.
+
+    Args:
+        text: The text to show as code.
+
+    Returns:
+        The code span. Pipes are escaped so they do not split the cell, and a
+        padded double-backtick fence is used when the text has a backtick.
+    """
+    text = text.replace("|", "\\|")
+    if "`" in text:
+        return f"`` {text} ``"
+    return f"`{text}`"
+
+
+def pretty_key(key: str) -> str:
     """Turn 'ctrl+x ctrl+shift+p' into 'Ctrl+X Ctrl+Shift+P'."""
     chords = []
     for chord in key.split():
@@ -71,8 +91,8 @@ for b in bindings:
     chord = pretty_key(b.get("key", ""))
     cmd = b.get("command", "")
     when = b.get("when", "")
-    when_cell = f"`{when}`" if when else "—"
-    lines.append(f"| `{chord}` | `{cmd}` | {when_cell} |")
+    when_cell = code_span(when) if when else "—"
+    lines.append(f"| {code_span(chord)} | {code_span(cmd)} | {when_cell} |")
 lines.append(END)
 block = "\n".join(lines)
 
